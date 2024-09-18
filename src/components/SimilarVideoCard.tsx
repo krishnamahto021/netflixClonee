@@ -14,13 +14,11 @@ import { useMyList } from "src/hooks/useMyList";
 
 interface SimilarVideoCardProps {
   video: Movie;
-  anchorElement: HTMLElement;
   onRemoveFromList?: (id: number) => void;
 }
 
 export default function SimilarVideoCard({
   video,
-  anchorElement,
   onRemoveFromList,
 }: SimilarVideoCardProps) {
   const { data: configuration } = useGetConfigurationQuery(undefined);
