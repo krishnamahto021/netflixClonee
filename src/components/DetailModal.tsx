@@ -169,9 +169,6 @@ export default function DetailModal() {
                 <Stack direction="row" spacing={2} sx={{ mb: 3 }}>
                   <PlayButton sx={{ color: "black", py: 0 }} />
                   <NetflixIconButton>
-                    <AddIcon />
-                  </NetflixIconButton>
-                  <NetflixIconButton>
                     <ThumbUpOffAltIcon />
                   </NetflixIconButton>
                   <Box flexGrow={1} />
