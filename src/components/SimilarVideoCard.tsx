@@ -2,6 +2,7 @@ import Stack from "@mui/material/Stack";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
+import CheckIcon from "@mui/icons-material/Check";
 import AddIcon from "@mui/icons-material/Add";
 import { Movie } from "src/types/Movie";
 import NetflixIconButton from "./NetflixIconButton";
@@ -9,13 +10,34 @@ import MaxLineTypography from "./MaxLineTypography";
 import { formatMinuteToReadable, getRandomNumber } from "src/utils/common";
 import AgeLimitChip from "./AgeLimitChip";
 import { useGetConfigurationQuery } from "src/store/slices/configuration";
+import { useMyList } from "src/hooks/useMyList";
 
 interface SimilarVideoCardProps {
   video: Movie;
+  anchorElement: HTMLElement;
+  onRemoveFromList?: (id: number) => void;
 }
 
-export default function SimilarVideoCard({ video }: SimilarVideoCardProps) {
+export default function SimilarVideoCard({
+  video,
+  anchorElement,
+  onRemoveFromList,
+}: SimilarVideoCardProps) {
   const { data: configuration } = useGetConfigurationQuery(undefined);
+  const { myList, addToMyList, removeFromMyList } = useMyList();
+
+  const isInMyList = myList.some((item) => item.id === video.id);
+
+  const handleMyListClick = () => {
+    if (isInMyList) {
+      removeFromMyList(video.id);
+      if (onRemoveFromList) {
+        onRemoveFromList(video.id); // Notify parent component to update the UI
+      }
+    } else {
+      addToMyList(video);
+    }
+  };
 
   return (
     <Card>
@@ -81,8 +103,8 @@ export default function SimilarVideoCard({ video }: SimilarVideoCardProps) {
               </Stack>
             </div>
             <div style={{ flexGrow: 1 }} />
-            <NetflixIconButton>
-              <AddIcon />
+            <NetflixIconButton onClick={handleMyListClick}>
+              {isInMyList ? <CheckIcon /> : <AddIcon />}
             </NetflixIconButton>
           </Stack>
           <MaxLineTypography maxLine={4} variant="subtitle2">

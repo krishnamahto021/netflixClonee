@@ -127,24 +127,6 @@ export function Component() {
               </PlayerControlButton>
             </Box>
             <Box
-              px={2}
-              sx={{
-                position: "absolute",
-                top: { xs: "40%", sm: "55%", md: "60%" },
-                left: 0,
-              }}
-            >
-              <Typography
-                variant="h3"
-                sx={{
-                  fontWeight: 700,
-                  color: "white",
-                }}
-              >
-                Title
-              </Typography>
-            </Box>
-            <Box
               px={{ xs: 0, sm: 1, md: 2 }}
               sx={{
                 position: "absolute",

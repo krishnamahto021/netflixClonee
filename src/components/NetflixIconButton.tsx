@@ -7,6 +7,9 @@ const NetflixIconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
       <IconButton
         sx={{
           color: "white",
+          width: 48, // You can adjust this value to control the button size
+          height: 48, // Match height and width to make it a circle
+          borderRadius: "50%", // This makes it circular
           borderWidth: "2px",
           borderStyle: "solid",
           borderColor: "grey.700",

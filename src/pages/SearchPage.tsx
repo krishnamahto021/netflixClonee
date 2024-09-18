@@ -46,10 +46,6 @@ export default function SearchPage() {
     }
   }, [location.search]);
 
-  // Define handleSearchNavigate function
-  const handleSearchNavigate = (searchTerm: string) => {
-      navigate(`/search?q=${encodeURIComponent(searchTerm)}`);
-  };
 
   return (
     <Container maxWidth="lg">
