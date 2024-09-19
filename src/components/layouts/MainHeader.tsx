@@ -11,6 +11,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Avatar from "@mui/material/Avatar";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
+import NotificationsIcon from '@mui/icons-material/Notifications';
 import useOffSetTop from "src/hooks/useOffSetTop";
 import { APP_BAR_HEIGHT } from "src/constant";
 import Logo from "../Logo";
@@ -150,8 +151,11 @@ const MainHeader: React.FC = () => {
           ))}
         </Stack>
 
-        <Box sx={{ flexGrow: 0, display: "flex", gap: 2 }}>
+        <Box sx={{ flexGrow: 0, display: "flex", gap: 2, alignItems: "center" }}>
           <SearchBox />
+          <IconButton color="inherit" aria-label="notifications">
+            <NotificationsIcon />
+          </IconButton>
           <Tooltip title="Open settings">
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
               <Avatar alt="user_avatar" src="/avatar.png" variant="rounded" />
