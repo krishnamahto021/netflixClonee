@@ -11,8 +11,6 @@ const Search = styled("div")(({ theme }) => ({
   width: "100%",
   display: "flex",
   alignItems: "center",
-  border: "1px solid white",
-  backgroundColor: "black",
 }));
 
 const SearchIconWrapper = styled("div")(({ theme }) => ({
