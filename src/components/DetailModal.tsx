@@ -11,6 +11,7 @@ import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
 import CloseIcon from "@mui/icons-material/Close";
 import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import VolumeOffIcon from "@mui/icons-material/VolumeOff";
@@ -27,6 +28,8 @@ import { useDetailModal } from "src/providers/DetailModalProvider";
 import { useGetSimilarVideosQuery } from "src/store/slices/discover";
 import { MEDIA_TYPE } from "src/types/Common";
 import VideoJSPlayer from "./watch/VideoJSPlayer";
+import { useMyList } from "src/hooks/useMyList";
+import CheckIcon from "@mui/icons-material/Check";
 
 const Transition = forwardRef(function Transition(
   props: TransitionProps & {
@@ -45,6 +48,7 @@ export default function DetailModal() {
   );
   const playerRef = useRef<Player | null>(null);
   const [muted, setMuted] = useState(true);
+  const { myList, addToMyList, removeFromMyList } = useMyList();
 
   const handleReady = useCallback((player: Player) => {
     playerRef.current = player;
@@ -58,13 +62,32 @@ export default function DetailModal() {
     }
   }, []);
 
-  if (detail.mediaDetail) {
+  const isInMyList = detail.id !== undefined && myList.some(item => item.id === detail.id);
+
+  const handleAddRemoveMyList = () => {
+    if (detail.id !== undefined && detail.mediaDetail) {
+      if (isInMyList) {
+        removeFromMyList(detail.id);
+      } else {
+        addToMyList({
+          ...detail.mediaDetail, id: detail.id,
+          genre_ids: []
+        });
+      }
+    }
+  };
+
+  const handleClose = () => {
+    setDetailType({ mediaType: undefined, id: undefined });
+  };
+
+  if (detail.id !== undefined && detail.mediaDetail) {
     return (
       <Dialog
         fullWidth
         scroll="body"
         maxWidth="md"
-        open={!!detail.mediaDetail}
+        open={true}
         id="detail_dialog"
         TransitionComponent={Transition}
       >
@@ -135,9 +158,7 @@ export default function DetailModal() {
                 }}
               />
               <IconButton
-                onClick={() => {
-                  setDetailType({ mediaType: undefined, id: undefined });
-                }}
+                onClick={handleClose}
                 sx={{
                   top: 15,
                   right: 15,
@@ -164,10 +185,13 @@ export default function DetailModal() {
                 }}
               >
                 <MaxLineTypography variant="h4" maxLine={1} sx={{ mb: 2 }}>
-                  {detail.mediaDetail?.title}
+                  {detail.mediaDetail.title}
                 </MaxLineTypography>
                 <Stack direction="row" spacing={2} sx={{ mb: 3 }}>
                   <PlayButton sx={{ color: "black", py: 0 }} />
+                  <NetflixIconButton onClick={handleAddRemoveMyList}>
+                    {isInMyList ? <CheckIcon /> : <AddIcon />}
+                  </NetflixIconButton>
                   <NetflixIconButton>
                     <ThumbUpOffAltIcon />
                   </NetflixIconButton>
@@ -194,7 +218,7 @@ export default function DetailModal() {
                           sx={{ color: "success.main" }}
                         >{`${getRandomNumber(100)}% Match`}</Typography>
                         <Typography variant="body2">
-                          {detail.mediaDetail?.release_date.substring(0, 4)}
+                          {detail.mediaDetail.release_date.substring(0, 4)}
                         </Typography>
                         <AgeLimitChip label={`${getRandomNumber(20)}+`} />
                         <Typography variant="subtitle2">{`${formatMinuteToReadable(
@@ -208,17 +232,17 @@ export default function DetailModal() {
                         variant="body1"
                         sx={{ mt: 2 }}
                       >
-                        {detail.mediaDetail?.overview}
+                        {detail.mediaDetail.overview}
                       </MaxLineTypography>
                     </Grid>
                     <Grid item xs={12} sm={6} md={4}>
                       <Typography variant="body2" sx={{ my: 1 }}>
-                        {`Genres : ${detail.mediaDetail?.genres
+                        {`Genres : ${detail.mediaDetail.genres
                           .map((g) => g.name)
                           .join(", ")}`}
                       </Typography>
                       <Typography variant="body2" sx={{ my: 1 }}>
-                        {`Available in : ${detail.mediaDetail?.spoken_languages
+                        {`Available in : ${detail.mediaDetail.spoken_languages
                           .map((l) => l.name)
                           .join(", ")}`}
                       </Typography>
