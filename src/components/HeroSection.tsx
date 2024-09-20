@@ -4,7 +4,7 @@ import Stack from "@mui/material/Stack";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import VolumeOffIcon from "@mui/icons-material/VolumeOff";
 import Player from "video.js/dist/types/player";
-
+import { useNavigate } from "react-router-dom";
 import { getRandomNumber } from "src/utils/common";
 import MaxLineTypography from "./MaxLineTypography";
 import PlayButton from "./PlayButton";
@@ -31,6 +31,8 @@ export default function TopTrailer({ mediaType }: TopTrailerProps) {
     apiString: "popular",
     page: 1,
   });
+  const navigate = useNavigate(); // Initialize navigate
+
   const [getVideoDetail, { data: detail }] = useLazyGetAppendedVideosQuery();
   const [video, setVideo] = useState<Movie | null>(null);
   const [muted, setMuted] = useState(true);
@@ -218,7 +220,11 @@ export default function TopTrailer({ mediaType }: TopTrailerProps) {
                     {video.overview}
                   </MaxLineTypography>
                   <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
-                    <PlayButton size="large" />
+                    <PlayButton
+                      size="large"
+                      videoId={detail?.videos.results[0]?.key}
+                      videoTitle={video?.title}
+                    />
                     <MoreInfoButton
                       size="large"
                       onClick={() => {

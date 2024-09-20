@@ -1,25 +1,30 @@
 import Button, { ButtonProps } from "@mui/material/Button";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import { useNavigate } from "react-router-dom";
-import { MAIN_PATH } from "src/constant";
 
-export default function PlayButton({ sx, ...others }: ButtonProps) {
+interface PlayButtonProps extends ButtonProps {
+  videoId?: string;
+  videoTitle?: string;
+}
+
+export default function PlayButton({ sx, videoId, videoTitle, ...others }: PlayButtonProps) {
   const navigate = useNavigate();
+
+  const handleClick = () => {
+    if (videoId) {
+      navigate("/watch", {
+        state: {
+          videoId,
+          videoTitle,
+        },
+      });
+    }
+  };
+
   return (
     <Button
-      color="inherit"
       variant="contained"
-      startIcon={
-        <PlayArrowIcon
-          sx={{
-            fontSize: {
-              xs: "24px !important",
-              sm: "32px !important",
-              md: "40px !important",
-            },
-          }}
-        />
-      }
+      startIcon={<PlayArrowIcon />}
       {...others}
       sx={{
         px: { xs: 1, sm: 2 },
@@ -31,7 +36,7 @@ export default function PlayButton({ sx, ...others }: ButtonProps) {
         textTransform: "capitalize",
         ...sx,
       }}
-      onClick={() => navigate(`/${MAIN_PATH.watch}`)}
+      onClick={handleClick}
     >
       Play
     </Button>
