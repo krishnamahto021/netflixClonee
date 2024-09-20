@@ -204,7 +204,14 @@ export default function DetailModal() {
                   {detail.mediaDetail.title}
                 </MaxLineTypography>
                 <Stack direction="row" spacing={2} sx={{ mb: 3 }}>
-                  <PlayButton size="large" onClick={handlePlayVideo} />
+                  <PlayButton
+                    size="large"
+                    onClick={handlePlayVideo}
+                    videoId={
+                      detail.mediaDetail.videos.results[0]?.key || "L3oOldViIgY"
+                    }
+                    videoTitle={detail.mediaDetail.title}
+                  />
                   <NetflixIconButton onClick={handleAddRemoveMyList}>
                     {isInMyList ? <CheckIcon /> : <AddIcon />}
                   </NetflixIconButton>
