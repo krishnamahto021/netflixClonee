@@ -81,7 +81,7 @@ export default function TopTrailer({ mediaType }: TopTrailerProps) {
   }, []);
 
   return (
-    <Box sx={{ position: "relative", zIndex: 1 }}>
+    <Box sx={{ position: "relative", zIndex: 1}}>
       <Box
         sx={{
           mb: 3,
