@@ -31,7 +31,6 @@ export default function TopTrailer({ mediaType }: TopTrailerProps) {
     apiString: "popular",
     page: 1,
   });
-  const navigate = useNavigate(); // Initialize navigate
 
   const [getVideoDetail, { data: detail }] = useLazyGetAppendedVideosQuery();
   const [video, setVideo] = useState<Movie | null>(null);

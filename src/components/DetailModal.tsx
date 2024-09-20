@@ -30,6 +30,7 @@ import { MEDIA_TYPE } from "src/types/Common";
 import VideoJSPlayer from "./watch/VideoJSPlayer";
 import { useMyList } from "src/hooks/useMyList";
 import CheckIcon from "@mui/icons-material/Check";
+import { useNavigate } from "react-router-dom";
 
 const Transition = forwardRef(function Transition(
   props: TransitionProps & {
@@ -41,6 +42,7 @@ const Transition = forwardRef(function Transition(
 });
 
 export default function DetailModal() {
+  const navigate = useNavigate();
   const { detail, setDetailType } = useDetailModal();
   const { data: similarVideos } = useGetSimilarVideosQuery(
     { mediaType: detail.mediaType ?? MEDIA_TYPE.Movie, id: detail.id ?? 0 },
@@ -62,7 +64,20 @@ export default function DetailModal() {
     }
   }, []);
 
-  const isInMyList = detail.id !== undefined && myList.some(item => item.id === detail.id);
+  const handlePlayVideo = () => {
+    if (detail.id !== undefined && detail.mediaDetail) {
+      navigate("/watch", {
+        state: {
+          videoId: detail.mediaDetail.videos.results[0]?.key || "L3oOldViIgY",
+          videoTitle: detail.mediaDetail.title,
+          videoOverview: detail.mediaDetail.overview,
+        },
+      });
+    }
+  };
+
+  const isInMyList =
+    detail.id !== undefined && myList.some((item) => item.id === detail.id);
 
   const handleAddRemoveMyList = () => {
     if (detail.id !== undefined && detail.mediaDetail) {
@@ -70,8 +85,9 @@ export default function DetailModal() {
         removeFromMyList(detail.id);
       } else {
         addToMyList({
-          ...detail.mediaDetail, id: detail.id,
-          genre_ids: []
+          ...detail.mediaDetail,
+          id: detail.id,
+          genre_ids: [],
         });
       }
     }
@@ -188,7 +204,7 @@ export default function DetailModal() {
                   {detail.mediaDetail.title}
                 </MaxLineTypography>
                 <Stack direction="row" spacing={2} sx={{ mb: 3 }}>
-                  <PlayButton sx={{ color: "black", py: 0 }} />
+                  <PlayButton size="large" onClick={handlePlayVideo} />
                   <NetflixIconButton onClick={handleAddRemoveMyList}>
                     {isInMyList ? <CheckIcon /> : <AddIcon />}
                   </NetflixIconButton>
