@@ -252,16 +252,7 @@ export function Component() {
                   </Typography>
                 </Stack>
 
-                <Box flexGrow={1}>
-                  <MaxLineTypography
-                    maxLine={1}
-                    variant="subtitle1"
-                    textAlign="center"
-                    sx={{ maxWidth: 300, mx: "auto", color: "white" }}
-                  >
-                    Description
-                  </MaxLineTypography>
-                </Box>
+           
 
                 <Stack
                   direction="row"
