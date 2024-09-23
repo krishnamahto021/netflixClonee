@@ -44,6 +44,7 @@ export type MovieDetail = {
 };
 
 export type Movie = {
+  videos: any;
   poster_path: string | null;
   adult: boolean;
   overview: string;

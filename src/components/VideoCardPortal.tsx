@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import Stack from "@mui/material/Stack";
 import Card from "@mui/material/Card";
@@ -22,7 +22,6 @@ import GenreBreadcrumbs from "./GenreBreadcrumbs";
 import { useGetConfigurationQuery } from "src/store/slices/configuration";
 import { MEDIA_TYPE } from "src/types/Common";
 import { useGetGenresQuery } from "src/store/slices/genre";
-import { MAIN_PATH } from "src/constant";
 import { useMyList } from "src/hooks/useMyList";
 
 interface VideoCardModalProps {
@@ -39,23 +38,44 @@ export default function VideoCardModal({
   const navigate = useNavigate();
   const { data: configuration } = useGetConfigurationQuery(undefined);
   const { data: genres } = useGetGenresQuery(MEDIA_TYPE.Movie);
+  const { detail, setDetailType } = useDetailModal();
   const setPortal = usePortal();
   const rect = anchorElement.getBoundingClientRect();
-  const { setDetailType } = useDetailModal();
   const { myList, addToMyList, removeFromMyList } = useMyList();
-
+  
   const isInMyList = myList.some((item) => item.id === video.id);
 
   const handleMyListClick = () => {
     if (isInMyList) {
       removeFromMyList(video.id);
       if (onRemoveFromList) {
-        onRemoveFromList(video.id); // Notify parent component to update the UI
+        onRemoveFromList(video.id);
       }
     } else {
       addToMyList(video);
     }
   };
+
+  // Fetch detailed data for the video and then navigate to the watch page
+  const handlePlayVideo = () => {
+    if (!detail.mediaDetail || detail.mediaDetail.id !== video.id) {
+      // Set the detail type to fetch data if not already present
+      setDetailType({ mediaType: MEDIA_TYPE.Movie, id: video.id });
+    }
+  };
+
+  // Once detail.mediaDetail is updated, navigate to the watch page
+  useEffect(() => {
+    if (detail.mediaDetail && detail.mediaDetail.id === video.id) {
+      navigate("/watch", {
+        state: {
+          videoId: detail.mediaDetail.videos?.results[0]?.key || "L3oOldViIgY",
+          videoTitle: detail.mediaDetail.title,
+          videoOverview: detail.mediaDetail.overview,
+        },
+      });
+    }
+  }, [detail.mediaDetail, video.id, navigate]);
 
   return (
     <Card
@@ -116,7 +136,7 @@ export default function VideoCardModal({
           <Stack direction="row" spacing={1}>
             <NetflixIconButton
               sx={{ p: 0 }}
-              onClick={() => navigate(`/${MAIN_PATH.watch}`)}
+              onClick={handlePlayVideo}
             >
               <PlayCircleIcon sx={{ width: 40, height: 40 }} />
             </NetflixIconButton>

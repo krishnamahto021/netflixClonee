@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState, useRef, forwardRef } from "react";
 import { Movie } from "src/types/Movie";
 import { usePortal } from "src/providers/PortalProvider";
