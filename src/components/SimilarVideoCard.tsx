@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from 'react';
 import Stack from "@mui/material/Stack";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -5,7 +6,6 @@ import Typography from "@mui/material/Typography";
 import CheckIcon from "@mui/icons-material/Check";
 import AddIcon from "@mui/icons-material/Add";
 import PlayCircleIcon from "@mui/icons-material/PlayCircle";
-import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import { Movie } from "src/types/Movie";
 import NetflixIconButton from "./NetflixIconButton";
 import MaxLineTypography from "./MaxLineTypography";
@@ -16,7 +16,6 @@ import { useMyList } from "src/hooks/useMyList";
 import { useDetailModal } from "src/providers/DetailModalProvider";
 import { MEDIA_TYPE } from "src/types/Common";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
 
 interface SimilarVideoCardProps {
   video: Movie;
@@ -38,7 +37,7 @@ export default function SimilarVideoCard({
     if (isInMyList) {
       removeFromMyList(video.id);
       if (onRemoveFromList) {
-        onRemoveFromList(video.id); // Notify parent component to update the UI
+        onRemoveFromList(video.id);
       }
     } else {
       addToMyList(video);
@@ -46,23 +45,21 @@ export default function SimilarVideoCard({
   };
 
   const handlePlayVideo = () => {
-    if (!detail.mediaDetail || detail.mediaDetail.id !== video.id) {
-      // Set the detail type to fetch data if not already present
-      setDetailType({ mediaType: MEDIA_TYPE.Movie, id: video.id });
-    }
+    setDetailType({ mediaType: MEDIA_TYPE.Movie, id: video.id });
   };
 
   useEffect(() => {
     if (detail.mediaDetail && detail.mediaDetail.id === video.id) {
+      const videoKey = detail.mediaDetail.videos?.results[0]?.key || "L3oOldViIgY";
       navigate("/watch", {
         state: {
-          videoId: detail.mediaDetail.videos?.results[0]?.key || "L3oOldViIgY",
-          videoTitle: detail.mediaDetail.title,
-          videoOverview: detail.mediaDetail.overview,
+          videoId: videoKey,
+          videoTitle: video.title,
+          videoOverview: video.overview,
         },
       });
     }
-  }, [detail.mediaDetail, video.id, navigate]);
+  }, [detail.mediaDetail, video, navigate]);
 
   return (
     <Card>
