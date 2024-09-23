@@ -4,6 +4,8 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import CheckIcon from "@mui/icons-material/Check";
 import AddIcon from "@mui/icons-material/Add";
+import PlayCircleIcon from "@mui/icons-material/PlayCircle";
+import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import { Movie } from "src/types/Movie";
 import NetflixIconButton from "./NetflixIconButton";
 import MaxLineTypography from "./MaxLineTypography";
@@ -11,6 +13,10 @@ import { formatMinuteToReadable, getRandomNumber } from "src/utils/common";
 import AgeLimitChip from "./AgeLimitChip";
 import { useGetConfigurationQuery } from "src/store/slices/configuration";
 import { useMyList } from "src/hooks/useMyList";
+import { useDetailModal } from "src/providers/DetailModalProvider";
+import { MEDIA_TYPE } from "src/types/Common";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 interface SimilarVideoCardProps {
   video: Movie;
@@ -23,6 +29,8 @@ export default function SimilarVideoCard({
 }: SimilarVideoCardProps) {
   const { data: configuration } = useGetConfigurationQuery(undefined);
   const { myList, addToMyList, removeFromMyList } = useMyList();
+  const { detail, setDetailType } = useDetailModal();
+  const navigate = useNavigate();
 
   const isInMyList = myList.some((item) => item.id === video.id);
 
@@ -36,6 +44,25 @@ export default function SimilarVideoCard({
       addToMyList(video);
     }
   };
+
+  const handlePlayVideo = () => {
+    if (!detail.mediaDetail || detail.mediaDetail.id !== video.id) {
+      // Set the detail type to fetch data if not already present
+      setDetailType({ mediaType: MEDIA_TYPE.Movie, id: video.id });
+    }
+  };
+
+  useEffect(() => {
+    if (detail.mediaDetail && detail.mediaDetail.id === video.id) {
+      navigate("/watch", {
+        state: {
+          videoId: detail.mediaDetail.videos?.results[0]?.key || "L3oOldViIgY",
+          videoTitle: detail.mediaDetail.title,
+          videoOverview: detail.mediaDetail.overview,
+        },
+      });
+    }
+  }, [detail.mediaDetail, video.id, navigate]);
 
   return (
     <Card>
@@ -101,6 +128,9 @@ export default function SimilarVideoCard({
               </Stack>
             </div>
             <div style={{ flexGrow: 1 }} />
+            <NetflixIconButton onClick={handlePlayVideo}>
+              <PlayCircleIcon sx={{ width: 40, height: 40 }} />
+            </NetflixIconButton>
             <NetflixIconButton onClick={handleMyListClick}>
               {isInMyList ? <CheckIcon /> : <AddIcon />}
             </NetflixIconButton>

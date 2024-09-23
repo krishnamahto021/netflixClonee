@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import Stack from "@mui/material/Stack";
 import Card from "@mui/material/Card";
@@ -42,7 +42,8 @@ export default function VideoCardModal({
   const setPortal = usePortal();
   const rect = anchorElement.getBoundingClientRect();
   const { myList, addToMyList, removeFromMyList } = useMyList();
-  
+
+  const [isPlayButtonClicked, setIsPlayButtonClicked] = useState(false); // Track Play button click
   const isInMyList = myList.some((item) => item.id === video.id);
 
   const handleMyListClick = () => {
@@ -56,17 +57,23 @@ export default function VideoCardModal({
     }
   };
 
-  // Fetch detailed data for the video and then navigate to the watch page
+  // Play button logic: fetch detailed data for the video and set play state
   const handlePlayVideo = () => {
+    setIsPlayButtonClicked(true);  // Set play button click
     if (!detail.mediaDetail || detail.mediaDetail.id !== video.id) {
-      // Set the detail type to fetch data if not already present
       setDetailType({ mediaType: MEDIA_TYPE.Movie, id: video.id });
     }
   };
 
-  // Once detail.mediaDetail is updated, navigate to the watch page
+  // Expand button logic: fetch data without setting play state
+  const handleExpandMore = () => {
+    setIsPlayButtonClicked(false);  // Set expand button click
+    setDetailType({ mediaType: MEDIA_TYPE.Movie, id: video.id });
+  };
+
+  // Only navigate if play button was clicked, not expand
   useEffect(() => {
-    if (detail.mediaDetail && detail.mediaDetail.id === video.id) {
+    if (detail.mediaDetail && detail.mediaDetail.id === video.id && isPlayButtonClicked) {
       navigate("/watch", {
         state: {
           videoId: detail.mediaDetail.videos?.results[0]?.key || "L3oOldViIgY",
@@ -75,7 +82,7 @@ export default function VideoCardModal({
         },
       });
     }
-  }, [detail.mediaDetail, video.id, navigate]);
+  }, [detail.mediaDetail, video.id, isPlayButtonClicked, navigate]);
 
   return (
     <Card
@@ -148,9 +155,8 @@ export default function VideoCardModal({
             </NetflixIconButton>
             <div style={{ flexGrow: 1 }} />
             <NetflixIconButton
-              onClick={() => {
-                setDetailType({ mediaType: MEDIA_TYPE.Movie, id: video.id });
-              }}
+              // No navigation, only setting detail type to expand the modal
+              onClick={handleExpandMore}
             >
               <ExpandMoreIcon />
             </NetflixIconButton>
@@ -169,7 +175,7 @@ export default function VideoCardModal({
           {genres && (
             <GenreBreadcrumbs
               genres={genres
-                .filter((genre) => video.genre_ids.includes(genre.id))
+                .filter((genre: { id: number; }) => video.genre_ids.includes(genre.id))
                 .map((genre) => genre.name)}
             />
           )}
