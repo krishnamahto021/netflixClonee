@@ -80,6 +80,16 @@ const extendedApi = tmdbApi.injectEndpoints({
         itemKey: genreId,
       }),
     }),
+    searchMovies: build.query<PaginatedMovieResult, { query: string; page?: number }>({
+      query: ({ query, page = 1 }) => ({
+        url: `/search/movie`,
+        params: {
+          api_key: TMDB_V3_API_KEY,
+          query,
+          page,
+        },
+      }),
+    }),
     getVideosByMediaTypeAndCustomGenre: build.query<
       PaginatedMovieResult & {
         mediaType: MEDIA_TYPE;
@@ -126,6 +136,7 @@ const extendedApi = tmdbApi.injectEndpoints({
 
 export const {
   useGetVideosByMediaTypeAndGenreIdQuery,
+  useSearchMoviesQuery, 
   useLazyGetVideosByMediaTypeAndGenreIdQuery,
   useGetVideosByMediaTypeAndCustomGenreQuery,
   useLazyGetVideosByMediaTypeAndCustomGenreQuery,
