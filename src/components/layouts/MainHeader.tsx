@@ -20,8 +20,6 @@ import { styled } from "@mui/material/styles";
 
 const pages = [
   { name: "My List", path: "/my-list" },
-  { name: "Movies", path: "/movies" },
-  { name: "Tv Shows", path: "/tv-shows" }
 ];
 
 interface NetflixLinkProps extends LinkProps {
