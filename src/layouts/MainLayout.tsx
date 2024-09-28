@@ -8,11 +8,16 @@ import PortalProvider from "src/providers/PortalProvider";
 import { MAIN_PATH } from "src/constant";
 import { Footer, MainHeader } from "src/components/layouts";
 import MainLoadingScreen from "src/components/MainLoadingScreen";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+// Import MyListProvider
+import { MyListProvider } from 'src/hooks/MyListContext';
 
 export default function MainLayout() {
   const location = useLocation();
   const navigation = useNavigation();
-  // console.log("Nav Stat: ", navigation.state);
+
   return (
     <Box
       sx={{
@@ -23,14 +28,19 @@ export default function MainLayout() {
     >
       <MainHeader />
       {navigation.state !== "idle" && <MainLoadingScreen />}
-      <DetailModalProvider>
-        <DetailModal />
-        <PortalProvider>
-          {/* <MainLoadingScreen /> */}
-          <Outlet />
-          <VideoPortalContainer />
-        </PortalProvider>
-      </DetailModalProvider>
+
+      {/* Wrap DetailModalProvider and PortalProvider with MyListProvider */}
+      <MyListProvider>
+        <DetailModalProvider>
+          <DetailModal />
+          <PortalProvider>
+            <Outlet />
+            <VideoPortalContainer />
+            <ToastContainer />
+          </PortalProvider>
+        </DetailModalProvider>
+      </MyListProvider>
+
       {location.pathname !== `/${MAIN_PATH.watch}` && <Footer />}
     </Box>
   );

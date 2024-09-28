@@ -1,6 +1,6 @@
 import React from "react";
 import { Grid, Typography, Box } from "@mui/material";
-import { useMyList } from "src/hooks/useMyList";
+import { useMyList } from "src/hooks/MyListContext";
 import VideoItemWithHover from "src/components/VideoItemWithHover";
 
 export default function MyList() {

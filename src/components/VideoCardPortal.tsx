@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import Stack from "@mui/material/Stack";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -22,20 +22,20 @@ import GenreBreadcrumbs from "./GenreBreadcrumbs";
 import { useGetConfigurationQuery } from "src/store/slices/configuration";
 import { MEDIA_TYPE } from "src/types/Common";
 import { useGetGenresQuery } from "src/store/slices/genre";
-import { useMyList } from "src/hooks/useMyList";
+import { useMyList } from "src/hooks/MyListContext";
+import { toast } from "react-toastify";
 
 interface VideoCardModalProps {
   video: Movie;
   anchorElement: HTMLElement;
-  onRemoveFromList?: (id: number) => void;
 }
 
 export default function VideoCardModal({
   video,
   anchorElement,
-  onRemoveFromList,
 }: VideoCardModalProps) {
   const navigate = useNavigate();
+  const location = useLocation();
   const { data: configuration } = useGetConfigurationQuery(undefined);
   const { data: genres } = useGetGenresQuery(MEDIA_TYPE.Movie);
   const { detail, setDetailType } = useDetailModal();
@@ -43,37 +43,38 @@ export default function VideoCardModal({
   const rect = anchorElement.getBoundingClientRect();
   const { myList, addToMyList, removeFromMyList } = useMyList();
 
-  const [isPlayButtonClicked, setIsPlayButtonClicked] = useState(false); // Track Play button click
+  const [isPlayButtonClicked, setIsPlayButtonClicked] = useState(false);
   const isInMyList = myList.some((item) => item.id === video.id);
+  const isOnMyListPage = location.pathname === "/my-list";
 
   const handleMyListClick = () => {
     if (isInMyList) {
       removeFromMyList(video.id);
-      if (onRemoveFromList) {
-        onRemoveFromList(video.id);
-      }
+      toast.success(`${video.title} removed from My List`);
     } else {
       addToMyList(video);
+      toast.success(`${video.title} added to My List`);
     }
   };
 
-  // Play button logic: fetch detailed data for the video and set play state
   const handlePlayVideo = () => {
-    setIsPlayButtonClicked(true);  // Set play button click
+    setIsPlayButtonClicked(true);
     if (!detail.mediaDetail || detail.mediaDetail.id !== video.id) {
       setDetailType({ mediaType: MEDIA_TYPE.Movie, id: video.id });
     }
   };
 
-  // Expand button logic: fetch data without setting play state
   const handleExpandMore = () => {
-    setIsPlayButtonClicked(false);  // Set expand button click
+    setIsPlayButtonClicked(false);
     setDetailType({ mediaType: MEDIA_TYPE.Movie, id: video.id });
   };
 
-  // Only navigate if play button was clicked, not expand
   useEffect(() => {
-    if (detail.mediaDetail && detail.mediaDetail.id === video.id && isPlayButtonClicked) {
+    if (
+      detail.mediaDetail &&
+      detail.mediaDetail.id === video.id &&
+      isPlayButtonClicked
+    ) {
       navigate("/watch", {
         state: {
           videoId: detail.mediaDetail.videos?.results[0]?.key || "L3oOldViIgY",
@@ -141,10 +142,7 @@ export default function VideoCardModal({
       <CardContent>
         <Stack spacing={1}>
           <Stack direction="row" spacing={1}>
-            <NetflixIconButton
-              sx={{ p: 0 }}
-              onClick={handlePlayVideo}
-            >
+            <NetflixIconButton sx={{ p: 0 }} onClick={handlePlayVideo}>
               <PlayCircleIcon sx={{ width: 40, height: 40 }} />
             </NetflixIconButton>
             <NetflixIconButton onClick={handleMyListClick}>
@@ -175,7 +173,9 @@ export default function VideoCardModal({
           {genres && (
             <GenreBreadcrumbs
               genres={genres
-                .filter((genre: { id: number; }) => video.genre_ids.includes(genre.id))
+                .filter((genre: { id: number }) =>
+                  video.genre_ids.includes(genre.id)
+                )
                 .map((genre) => genre.name)}
             />
           )}
