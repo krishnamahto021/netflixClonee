@@ -63,10 +63,11 @@ function SlideItem({ item }: SlideItemProps) {
 
 interface SlickSliderProps {
   data: PaginatedMovieResult;
-  genre: Genre | CustomGenre;
+  genre?: Genre | CustomGenre;
   handleNext: (page: number) => void;
 }
-export default function SlickSlider({ data, genre }: SlickSliderProps) {
+
+export default function SlickSlider({ data, genre, handleNext }: SlickSliderProps) {
   const sliderRef = useRef<Slider>(null);
   const [activeSlideIndex, setActiveSlideIndex] = useState(0);
   const [showExplore, setShowExplore] = useState(false);
@@ -89,13 +90,7 @@ export default function SlickSlider({ data, genre }: SlickSliderProps) {
     lazyLoad: "ondemand",
     slidesToShow: 6,
     slidesToScroll: 6,
-    // afterChange: (current) => {
-    //   console.log("After Change", current);
-    // },
     beforeChange,
-    // onEdge: (direction) => {
-    //   console.log("Edge: ", direction);
-    // },
     responsive: [
       {
         breakpoint: 1536,
@@ -132,56 +127,61 @@ export default function SlickSlider({ data, genre }: SlickSliderProps) {
     sliderRef.current?.slickPrev();
   };
 
-  const handleNext = () => {
+  const handleNextSlide = () => {
     sliderRef.current?.slickNext();
+    if (isEnd) {
+      handleNext(data.page + 1);
+    }
   };
 
   return (
     <Box sx={{ overflow: "hidden", height: "100%", zIndex: 1 }}>
       {data.results.length > 0 && (
         <>
-          <Stack
-            spacing={2}
-            direction="row"
-            alignItems="center"
-            sx={{ mb: 2, pl: { xs: "30px", sm: "60px" } }}
-          >
-            <NetflixNavigationLink
-              variant="h5"
-              to={`/genre/${
-                genre.id || genre.name.toLowerCase().replace(" ", "_")
-              }`}
-              sx={{
-                display: "inline-block",
-                fontWeight: 700,
-              }}
-              onMouseOver={() => {
-                setShowExplore(true);
-              }}
-              onMouseLeave={() => {
-                setShowExplore(false);
-              }}
+          {genre && (
+            <Stack
+              spacing={2}
+              direction="row"
+              alignItems="center"
+              sx={{ mb: 2, pl: { xs: "30px", sm: "60px" } }}
             >
-              {`${genre.name} Movies `}
-              <MotionContainer
-                open={showExplore}
-                initial="initial"
-                sx={{ display: "inline", color: "success.main" }}
+              <NetflixNavigationLink
+                variant="h5"
+                to={`/genre/${
+                  genre.id || genre.name.toLowerCase().replace(" ", "_")
+                }`}
+                sx={{
+                  display: "inline-block",
+                  fontWeight: 700,
+                }}
+                onMouseOver={() => {
+                  setShowExplore(true);
+                }}
+                onMouseLeave={() => {
+                  setShowExplore(false);
+                }}
               >
-                {"Explore All".split("").map((letter, index) => (
-                  <motion.span key={index} variants={varFadeIn}>
-                    {letter}
-                  </motion.span>
-                ))}
-              </MotionContainer>
-            </NetflixNavigationLink>
-          </Stack>
+                {`${genre.name} Movies `}
+                <MotionContainer
+                  open={showExplore}
+                  initial="initial"
+                  sx={{ display: "inline", color: "success.main" }}
+                >
+                  {"Explore All".split("").map((letter, index) => (
+                    <motion.span key={index} variants={varFadeIn}>
+                      {letter}
+                    </motion.span>
+                  ))}
+                </MotionContainer>
+              </NetflixNavigationLink>
+            </Stack>
+          )}
 
           <RootStyle>
             <CustomNavigation
               isEnd={isEnd}
               arrowWidth={ARROW_MAX_WIDTH}
-              onNext={handleNext}
+              onNext={handleNextSlide}
               onPrevious={handlePrevious}
               activeSlideIndex={activeSlideIndex}
             >

@@ -1,27 +1,24 @@
-import React from 'react';
+import React from "react";
 import { useLocation } from "react-router-dom";
 import { Container, Typography, Box, styled } from "@mui/material";
 import { useSearchMoviesQuery } from "../store/slices/discover";
-import SearchBox from "../components/SearchBox";
-import SliderRowForGenre from "../components/slick-slider/SlickSlider";
-import { PaginatedMovieResult } from "../types/Common";
-import { CustomGenre } from "../types/Genre";
+import SlickSlider from "../components/slick-slider/SlickSlider";
 
-// Styled components
 const FullWidthContainer = styled(Container)(({ theme }) => ({
-  maxWidth: '100% !important',
+  maxWidth: "100% !important",
   padding: theme.spacing(2),
-  marginTop: theme.spacing(8), // Add top margin
-  color: 'white', // Set text color to white
+  marginTop: theme.spacing(8),
+  paddingTop:theme.spacing(12),
+  color: "white",
 }));
 
 const StyledSliderBox = styled(Box)(({ theme }) => ({
   marginBottom: theme.spacing(4),
-  '& .slick-list': {
-    margin: '0 -10px',
+  "& .slick-list": {
+    margin: "0 -15px",
   },
-  '& .slick-slide': {
-    padding: '0 10px',
+  "& .slick-slide": {
+    padding: "0 15px",
   },
 }));
 
@@ -30,46 +27,47 @@ export default function SearchPage() {
   const searchParams = new URLSearchParams(location.search);
   const query = searchParams.get("q") || "";
 
-  const { data: searchResults, error, isLoading } = useSearchMoviesQuery({
+  const {
+    data: searchResults,
+    error,
+    isLoading,
+    refetch,
+  } = useSearchMoviesQuery({
     query,
   });
 
-  const searchGenres: CustomGenre[] = [
-    { id: 9000, name: 'Top Results', apiString: `search/movie?query=${query}&page=1` },
-    { id: 9001, name: 'Action', apiString: `search/movie?query=${query}&page=1` },
-    { id: 9002, name: 'Drama', apiString: `search/movie?query=${query}&page=1` },
-    { id: 9003, name: 'Comedy', apiString: `search/movie?query=${query}&page=1` },
-    { id: 9004, name: 'Horror', apiString: `search/movie?query=${query}&page=1` },
-    { id: 9005, name: 'Romance', apiString: `search/movie?query=${query}&page=1` }
-  ];
-
-  const getDataForGenre = (genre: CustomGenre): PaginatedMovieResult => {
-    return searchResults || { results: [], page: 1, total_pages: 0, total_results: 0 };
+  const handleNextPage = (page: number) => {
+    refetch({ query, page });
   };
 
   return (
     <FullWidthContainer>
-      <Typography variant="h4" component="h1" gutterBottom>
+      <Typography variant="h4" component="h1" sx={{ mx: '4.4rem' }}  gutterBottom>
         Search Results for "{query}"
       </Typography>
-      {isLoading && <Typography>Loading...</Typography>}
-      {error && <Typography>Error fetching search results</Typography>}
-      {searchResults && searchResults.results && searchResults.results.length > 0 ? (
-        <Box>
-          {searchGenres.map((genre) => (
-            <StyledSliderBox key={genre.id}>
-              <SliderRowForGenre
-                data={getDataForGenre(genre)}
-                genre={genre}
-                handleNext={() => {
-                  console.log(`Loading next page for ${genre.name}`);
-                }}
-              />
-            </StyledSliderBox>
-          ))}
-        </Box>
+      {isLoading && (
+        <Typography variant="h4" component="h1" gutterBottom>
+          Loading...
+        </Typography>
+      )}
+      {error && (
+        <Typography variant="h4" component="h1" gutterBottom>
+          Error fetching search results
+        </Typography>
+      )}
+      {searchResults &&
+      searchResults.results &&
+      searchResults.results.length > 0 ? (
+        <StyledSliderBox>
+          <SlickSlider
+            data={searchResults}
+            handleNext={handleNextPage}
+          />
+        </StyledSliderBox>
       ) : (
-        <Typography>No results found for "{query}"</Typography>
+        <Typography variant="h4" component="h1" gutterBottom>
+          No results found for "{query}"
+        </Typography>
       )}
     </FullWidthContainer>
   );
