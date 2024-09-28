@@ -1,4 +1,3 @@
-import React from "react";
 import { useLocation } from "react-router-dom";
 import { Container, Typography, Box, styled } from "@mui/material";
 import { useSearchMoviesQuery } from "../store/slices/discover";
@@ -8,7 +7,7 @@ const FullWidthContainer = styled(Container)(({ theme }) => ({
   maxWidth: "100% !important",
   padding: theme.spacing(2),
   marginTop: theme.spacing(8),
-  paddingTop:theme.spacing(12),
+  paddingTop: theme.spacing(12),
   color: "white",
 }));
 
@@ -36,13 +35,13 @@ export default function SearchPage() {
     query,
   });
 
-  const handleNextPage = (page: number) => {
-    refetch({ query, page });
+  const handleNextPage = () => {
+    refetch();
   };
 
   return (
     <FullWidthContainer>
-      <Typography variant="h4" component="h1" sx={{ mx: '4.4rem' }}  gutterBottom>
+      <Typography variant="h4" component="h1" sx={{ mx: '4.4rem' }} gutterBottom>
         Search Results for "{query}"
       </Typography>
       {isLoading && (
