@@ -1,11 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import Stack from "@mui/material/Stack";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import Typography from "@mui/material/Typography";
-import CheckIcon from "@mui/icons-material/Check";
-import AddIcon from "@mui/icons-material/Add";
-import PlayCircleIcon from "@mui/icons-material/PlayCircle";
+import React, { useEffect } from 'react';
+import { Card, CardContent, Typography, Stack, Box, useMediaQuery, useTheme } from '@mui/material';
+import { Check as CheckIcon, Add as AddIcon, PlayCircle as PlayCircleIcon } from '@mui/icons-material';
 import { Movie } from "src/types/Movie";
 import NetflixIconButton from "./NetflixIconButton";
 import MaxLineTypography from "./MaxLineTypography";
@@ -30,6 +25,8 @@ export default function SimilarVideoCard({
   const { myList, addToMyList, removeFromMyList } = useMyList();
   const { detail, setDetailType } = useDetailModal();
   const navigate = useNavigate();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const isInMyList = myList.some((item) => item.id === video.id);
 
@@ -62,79 +59,81 @@ export default function SimilarVideoCard({
   }, [detail.mediaDetail, video, navigate]);
 
   return (
-    <Card>
-      <div
-        style={{
-          width: "100%",
-          position: "relative",
-          paddingTop: "calc(9 / 16 * 100%)",
-        }}
-      >
-        <img
+    <Card sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+      <Box sx={{ position: 'relative', paddingTop: 'calc(9 / 16 * 100%)', width: '100%' }}>
+        <Box
+          component="img"
           src={`${configuration?.images.base_url}w780${video.backdrop_path}`}
-          style={{
+          sx={{
+            position: 'absolute',
             top: 0,
-            height: "100%",
-            position: "absolute",
+            left: 0,
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
           }}
+          alt={video.title}
         />
-        <div
-          style={{
+        <Typography
+          variant="subtitle2"
+          sx={{
+            position: 'absolute',
             top: 10,
             right: 15,
-            position: "absolute",
+            bgcolor: 'rgba(0, 0, 0, 0.5)',
+            padding: '2px 6px',
+            borderRadius: 1,
           }}
         >
-          <Typography variant="subtitle2">{`${formatMinuteToReadable(
-            getRandomNumber(180)
-          )}`}</Typography>
-        </div>
-        <div
-          style={{
+          {formatMinuteToReadable(getRandomNumber(180))}
+        </Typography>
+        <Box
+          sx={{
+            position: 'absolute',
+            bottom: 0,
             left: 0,
             right: 0,
-            bottom: 0,
-            paddingLeft: "16px",
-            paddingRight: "16px",
-            paddingBottom: "4px",
-            position: "absolute",
+            padding: 2,
+            background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%)',
           }}
         >
           <MaxLineTypography
             maxLine={1}
-            sx={{ width: "80%", fontWeight: 700 }}
-            variant="subtitle1"
+            variant="h6"
+            sx={{ fontWeight: 700, color: 'white' }}
           >
             {video.title}
           </MaxLineTypography>
-        </div>
-      </div>
-      <CardContent>
-        <Stack spacing={1}>
-          <Stack direction="row" alignItems="center">
-            <div>
-              <Typography
-                variant="subtitle2"
-                sx={{ color: "success.main" }}
-              >{`${getRandomNumber(100)}% Match`}</Typography>
+        </Box>
+      </Box>
+      <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
+        <Stack spacing={2}>
+          <Stack direction="row" justifyContent="space-between" alignItems="center">
+            <Box>
+              <Typography variant="subtitle2" color="success.main">
+                {`${getRandomNumber(100)}% Match`}
+              </Typography>
               <Stack direction="row" spacing={1} alignItems="center">
                 <AgeLimitChip label={`${getRandomNumber(20)}+`} />
                 <Typography variant="body2">
                   {video.release_date.substring(0, 4)}
                 </Typography>
               </Stack>
-            </div>
-            <div style={{ flexGrow: 1 }} />
-            <NetflixIconButton onClick={handlePlayVideo}>
-              <PlayCircleIcon sx={{ width: 40, height: 40 }} />
-            </NetflixIconButton>
-            <NetflixIconButton onClick={handleMyListClick}>
-              {isInMyList ? <CheckIcon /> : <AddIcon />}
-            </NetflixIconButton>
+            </Box>
+            <Stack direction="row" spacing={1}>
+              <NetflixIconButton onClick={handlePlayVideo}>
+                <PlayCircleIcon />
+              </NetflixIconButton>
+              <NetflixIconButton onClick={handleMyListClick}>
+                {isInMyList ? <CheckIcon /> : <AddIcon />}
+              </NetflixIconButton>
+            </Stack>
           </Stack>
-          <MaxLineTypography maxLine={4} variant="subtitle2">
-            {video.overview}
-          </MaxLineTypography>
+          {!isMobile && (
+            <MaxLineTypography maxLine={3} variant="body2">
+              {video.overview}
+            </MaxLineTypography>
+          )}
         </Stack>
       </CardContent>
     </Card>
