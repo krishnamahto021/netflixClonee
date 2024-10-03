@@ -67,12 +67,21 @@ const MainHeader: React.FC = () => {
         px: "60px",
         height: APP_BAR_HEIGHT,
         backgroundImage: "none",
+        position: "fixed",
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: (theme) => theme.zIndex.drawer + 1,
         ...(isOffset
           ? {
               bgcolor: "primary.main",
               boxShadow: (theme) => theme.shadows[4],
             }
-          : { boxShadow: 0}),
+          : { 
+              bgcolor: "transparent",
+              boxShadow: 0,
+              backgroundImage: "linear-gradient(to bottom, rgba(0,0,0,0.7) 10%, rgba(0,0,0,0))"
+            }),
       }}
     >
       <Toolbar disableGutters>

@@ -102,6 +102,7 @@ export default function DetailModal() {
     return (
       <Dialog
         fullWidth
+        fullScreen={isMobile}
         scroll="body"
         maxWidth="md"
         open={true}
@@ -122,7 +123,7 @@ export default function DetailModal() {
               sx={{
                 width: "100%",
                 position: "relative",
-                height: "calc(9 / 16 * 100%)",
+                height: { xs: "56.25vw", sm: "calc(9 / 16 * 100%)" },
               }}
             >
               <VideoJSPlayer
@@ -152,7 +153,7 @@ export default function DetailModal() {
                   top: 0,
                   left: 0,
                   bottom: 0,
-                  right: "26.09%",
+                  right: { xs: 0, sm: "26.09%" },
                   opacity: 1,
                   position: "absolute",
                   transition: "opacity .5s",
@@ -168,7 +169,7 @@ export default function DetailModal() {
                   backgroundSize: "100% 100%",
                   bottom: 0,
                   position: "absolute",
-                  height: "14.7vw",
+                  height: { xs: "100%", sm: "14.7vw" },
                   opacity: 1,
                   top: "auto",
                   width: "100%",
@@ -181,15 +182,15 @@ export default function DetailModal() {
                   right: 15,
                   position: "absolute",
                   bgcolor: "#181818",
-                  width: { xs: 22, sm: 40 },
-                  height: { xs: 22, sm: 40 },
+                  width: { xs: 30, sm: 40 },
+                  height: { xs: 30, sm: 40 },
                   "&:hover": {
                     bgcolor: "primary.main",
                   },
                 }}
               >
                 <CloseIcon
-                  sx={{ color: "white", fontSize: { xs: 14, sm: 22 } }}
+                  sx={{ color: "white", fontSize: { xs: 16, sm: 22 } }}
                 />
               </IconButton>
               
@@ -207,7 +208,7 @@ export default function DetailModal() {
                   maxLine={1} 
                   sx={{ 
                     mb: 2,
-                    display: { xs: 'none', sm: 'block' }
+                    display: { xs: 'block', sm: 'block' }
                   }}
                 >
                   {detail.mediaDetail.title}
@@ -221,88 +222,33 @@ export default function DetailModal() {
                     }
                     videoTitle={detail.mediaDetail.title}
                   />
-                  {!isMobile && (
-                    <>
-                      <NetflixIconButton onClick={handleAddRemoveMyList}>
-                        {isInMyList ? <CheckIcon /> : <AddIcon />}
-                      </NetflixIconButton>
-                      <NetflixIconButton>
-                        <ThumbUpOffAltIcon />
-                      </NetflixIconButton>
-                      <Box flexGrow={1} />
-                      <NetflixIconButton
-                        size="large"
-                        onClick={() => handleMute(muted)}
-                        sx={{ zIndex: 2 }}
-                      >
-                        {!muted ? <VolumeUpIcon /> : <VolumeOffIcon />}
-                      </NetflixIconButton>
-                    </>
-                  )}
+                  <NetflixIconButton onClick={handleAddRemoveMyList}>
+                    {isInMyList ? <CheckIcon /> : <AddIcon />}
+                  </NetflixIconButton>
+                  <NetflixIconButton>
+                    <ThumbUpOffAltIcon />
+                  </NetflixIconButton>
+                  <Box flexGrow={1} />
+                  <NetflixIconButton
+                    size="large"
+                    onClick={() => handleMute(muted)}
+                    sx={{ zIndex: 2 }}
+                  >
+                    {!muted ? <VolumeUpIcon /> : <VolumeOffIcon />}
+                  </NetflixIconButton>
                 </Stack>
               </Box>
             </Box>
 
-            {/* Mobile view description */}
-            <Box sx={{ display: { xs: 'block', sm: 'none' }, px: 2, py: 2 }}>
-              <Typography variant="h6" sx={{ mb: 1 }}>
-                {detail.mediaDetail.title}
-              </Typography>
-              <Stack direction="row" spacing={1} alignItems="center" sx={{ flexWrap: 'wrap', mb: 2 }}>
-                <Typography
-                  variant="subtitle1"
-                  sx={{ color: "success.main" }}
-                >{`${getRandomNumber(100)}% Match`}</Typography>
-                <Typography variant="body2">
-                  {detail.mediaDetail.release_date.substring(0, 4)}
-                </Typography>
-                <AgeLimitChip label={`${getRandomNumber(20)}+`} />
-                <Typography variant="subtitle2">{`${formatMinuteToReadable(
-                  getRandomNumber(180)
-                )}`}</Typography>
-                <QualityChip label="HD" />
-              </Stack>
-              <Typography variant="body1" sx={{ mb: 2 }}>
-                {detail.mediaDetail.overview}
-              </Typography>
-              <Typography variant="body2" sx={{ my: 1 }}>
-                {`Genres: ${detail.mediaDetail.genres
-                  .map((g) => g.name)
-                  .join(", ")}`}
-              </Typography>
-              <Typography variant="body2" sx={{ my: 1 }}>
-                {`Available in: ${detail.mediaDetail.spoken_languages
-                  .map((l) => l.name)
-                  .join(", ")}`}
-              </Typography>
-              
-              {/* Mobile action buttons */}
-              <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
-                <NetflixIconButton onClick={handleAddRemoveMyList}>
-                  {isInMyList ? <CheckIcon /> : <AddIcon />}
-                </NetflixIconButton>
-                <NetflixIconButton>
-                  <ThumbUpOffAltIcon />
-                </NetflixIconButton>
-                <NetflixIconButton
-                  size="large"
-                  onClick={() => handleMute(muted)}
-                >
-                  {!muted ? <VolumeUpIcon /> : <VolumeOffIcon />}
-                </NetflixIconButton>
-              </Stack>
-            </Box>
-
-            {/* Desktop view description */}
             <Container
               sx={{
-                p: "0px !important",
-                display: { xs: 'none', sm: 'block' }
+                px: { xs: 2, sm: 3, md: 5 },
+                py: { xs: 3, sm: 0 },
               }}
             >
-              <Grid container spacing={5} alignItems="center">
-                <Grid item xs={12} sm={6} md={8}>
-                  <Stack direction="row" spacing={1} alignItems="center" sx={{ flexWrap: 'wrap' }}>
+              <Grid container spacing={5} alignItems="flex-start">
+                <Grid item xs={12} sm={8}>
+                  <Stack direction="row" spacing={1} alignItems="center" sx={{ flexWrap: 'wrap', mb: 2 }}>
                     <Typography
                       variant="subtitle1"
                       sx={{ color: "success.main" }}
@@ -317,21 +263,17 @@ export default function DetailModal() {
                     <QualityChip label="HD" />
                   </Stack>
 
-                  <MaxLineTypography
-                    maxLine={3}
-                    variant="body1"
-                    sx={{ mt: 2 }}
-                  >
+                  <Typography variant="body1" sx={{ mb: 2 }}>
                     {detail.mediaDetail.overview}
-                  </MaxLineTypography>
+                  </Typography>
                 </Grid>
-                <Grid item xs={12} sm={6} md={4}>
-                  <Typography variant="body2" sx={{ my: 1 }}>
+                <Grid item xs={12} sm={4}>
+                  <Typography variant="body2" sx={{ mb: 1 }}>
                     {`Genres: ${detail.mediaDetail.genres
                       .map((g) => g.name)
                       .join(", ")}`}
                   </Typography>
-                  <Typography variant="body2" sx={{ my: 1 }}>
+                  <Typography variant="body2" sx={{ mb: 1 }}>
                     {`Available in: ${detail.mediaDetail.spoken_languages
                       .map((l) => l.name)
                       .join(", ")}`}
@@ -344,7 +286,7 @@ export default function DetailModal() {
               <Container
                 sx={{
                   py: 2,
-                  px: { xs: 1, sm: 2, md: 5 },
+                  px: { xs: 2, sm: 3, md: 5 },
                 }}
               >
                 <Typography variant="h6" sx={{ mb: 2 }}>
@@ -352,7 +294,7 @@ export default function DetailModal() {
                 </Typography>
                 <Grid container spacing={2}>
                   {similarVideos.results.map((sm) => (
-                    <Grid item xs={12} sm={4} key={sm.id}>
+                    <Grid item xs={12} sm={6} md={4} key={sm.id}>
                       <SimilarVideoCard video={sm} />
                     </Grid>
                   ))}
