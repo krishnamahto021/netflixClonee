@@ -1,17 +1,14 @@
 import { useState, useRef } from "react";
 import Slider, { Settings } from "react-slick";
-import { motion } from "framer-motion";
 
 import { styled, Theme, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
 
 import CustomNavigation from "./CustomNavigation";
 import VideoItemWithHover from "src/components/VideoItemWithHover";
 import { ARROW_MAX_WIDTH } from "src/constant";
-import NetflixNavigationLink from "src/components/NetflixNavigationLink";
-import MotionContainer from "src/components/animate/MotionContainer";
-import { varFadeIn } from "src/components/animate/variants/fade/FadeIn";
 import { CustomGenre, Genre } from "src/types/Genre";
 import { Movie } from "src/types/Movie";
 import { PaginatedMovieResult } from "src/types/Common";
@@ -67,10 +64,13 @@ interface SlickSliderProps {
   handleNext: (page: number) => void;
 }
 
-export default function SlickSlider({ data, genre, handleNext }: SlickSliderProps) {
+export default function SlickSlider({
+  data,
+  genre,
+  handleNext,
+}: SlickSliderProps) {
   const sliderRef = useRef<Slider>(null);
   const [activeSlideIndex, setActiveSlideIndex] = useState(0);
-  const [showExplore, setShowExplore] = useState(false);
   const [isEnd, setIsEnd] = useState(false);
   const theme = useTheme();
 
@@ -145,35 +145,23 @@ export default function SlickSlider({ data, genre, handleNext }: SlickSliderProp
               alignItems="center"
               sx={{ mb: 2, pl: { xs: "30px", sm: "60px" } }}
             >
-              <NetflixNavigationLink
+              <Typography
                 variant="h5"
-                to={`/genre/${
-                  genre.id || genre.name.toLowerCase().replace(" ", "_")
-                }`}
                 sx={{
                   display: "inline-block",
                   fontWeight: 700,
-                }}
-                onMouseOver={() => {
-                  setShowExplore(true);
-                }}
-                onMouseLeave={() => {
-                  setShowExplore(false);
+                  "&:hover": {
+                    cursor: "pointer",
+                    "& .explore-text": {
+                      color: "success.main",
+                      display: "inline",
+                    },
+                  },
+                  color: "white",
                 }}
               >
                 {`${genre.name} Movies `}
-                <MotionContainer
-                  open={showExplore}
-                  initial="initial"
-                  sx={{ display: "inline", color: "success.main" }}
-                >
-                  {"Explore All".split("").map((letter, index) => (
-                    <motion.span key={index} variants={varFadeIn}>
-                      {letter}
-                    </motion.span>
-                  ))}
-                </MotionContainer>
-              </NetflixNavigationLink>
+              </Typography>
             </Stack>
           )}
 
