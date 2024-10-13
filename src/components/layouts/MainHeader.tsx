@@ -11,7 +11,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Avatar from "@mui/material/Avatar";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import NotificationsIcon from '@mui/icons-material/Notifications';
+import NotificationsIcon from "@mui/icons-material/Notifications";
 import useOffSetTop from "src/hooks/useOffSetTop";
 import { APP_BAR_HEIGHT } from "src/constant";
 import Logo from "../Logo";
@@ -22,9 +22,13 @@ const pages = [
   { name: "My List", path: "/my-list" },
 ];
 
+
+type Variant = "subtitle1" | "subtitle2" | "body1" | "body2";
+
 interface NetflixLinkProps extends LinkProps {
-  variant?: "subtitle1" | "subtitle2" | "body1" | "body2";
+  variant?: Variant;
 }
+
 
 const NetflixLink = styled(Link, {
   shouldForwardProp: (prop) => prop !== "variant",
@@ -90,7 +94,7 @@ const MainHeader: React.FC = () => {
         <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
           <IconButton
             size="large"
-            aria-label="account of current user"
+            aria-label="open navigation menu"
             aria-controls="menu-appbar"
             aria-haspopup="true"
             onClick={handleOpenNavMenu}

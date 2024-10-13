@@ -7,11 +7,10 @@ interface GridPageProps {
   genre: Genre | CustomGenre;
   mediaType: MEDIA_TYPE;
 }
-export default function GridPage({ genre, mediaType }: GridPageProps) {
-  const Component = withPagination(
-    GridWithInfiniteScroll,
-    mediaType,
-    genre
-  );
+
+const GridPage: React.FC<GridPageProps> = ({ genre, mediaType }) => {
+  const Component = withPagination(GridWithInfiniteScroll, mediaType, genre);
   return <Component />;
-}
+};
+
+export default GridPage;

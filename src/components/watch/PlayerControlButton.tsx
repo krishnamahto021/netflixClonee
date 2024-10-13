@@ -1,5 +1,4 @@
 import { forwardRef } from "react";
-
 import IconButton, { IconButtonProps } from "@mui/material/IconButton";
 
 const PlayerControlButton = forwardRef<HTMLButtonElement, IconButtonProps>(
@@ -7,7 +6,7 @@ const PlayerControlButton = forwardRef<HTMLButtonElement, IconButtonProps>(
     <IconButton
       ref={ref}
       sx={{
-       color: "white" ,
+        color: "white",
         padding: { xs: 0.5, sm: 1 },
         "& svg, & span": { transition: "transform .3s" },
         "&:hover svg, &:hover span": {

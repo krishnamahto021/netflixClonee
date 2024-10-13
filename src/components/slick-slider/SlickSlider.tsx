@@ -13,11 +13,13 @@ import { CustomGenre, Genre } from "src/types/Genre";
 import { Movie } from "src/types/Movie";
 import { PaginatedMovieResult } from "src/types/Common";
 
+// Root styled component for slider container
 const RootStyle = styled("div")(() => ({
   position: "relative",
   overflow: "inherit",
 }));
 
+// Slider styled component
 const StyledSlider = styled(Slider)(
   ({ theme, padding }: { theme: Theme; padding: number }) => ({
     display: "flex !important",
@@ -46,35 +48,33 @@ const StyledSlider = styled(Slider)(
   })
 );
 
+// Slide item component
 interface SlideItemProps {
   item: Movie;
 }
 
-function SlideItem({ item }: SlideItemProps) {
-  return (
-    <Box sx={{ pr: { xs: 0.5, sm: 1 } }}>
-      <VideoItemWithHover video={item} />
-    </Box>
-  );
-}
+const SlideItem: React.FC<SlideItemProps> = ({ item }) => (
+  <Box sx={{ pr: { xs: 0.5, sm: 1 } }}>
+    <VideoItemWithHover video={item} />
+  </Box>
+);
 
+// SlickSlider props interface
 interface SlickSliderProps {
   data: PaginatedMovieResult;
   genre?: Genre | CustomGenre;
   handleNext: (page: number) => void;
 }
 
-export default function SlickSlider({
-  data,
-  genre,
-  handleNext,
-}: SlickSliderProps) {
+// SlickSlider component
+const SlickSlider: React.FC<SlickSliderProps> = ({ data, genre, handleNext }) => {
   const sliderRef = useRef<Slider>(null);
   const [activeSlideIndex, setActiveSlideIndex] = useState(0);
   const [isEnd, setIsEnd] = useState(false);
   const theme = useTheme();
 
-  const beforeChange = async (currentIndex: number, nextIndex: number) => {
+  // Handle slide change
+  const beforeChange = (currentIndex: number, nextIndex: number) => {
     if (currentIndex < nextIndex) {
       setActiveSlideIndex(nextIndex);
     } else if (currentIndex > nextIndex) {
@@ -83,6 +83,7 @@ export default function SlickSlider({
     setActiveSlideIndex(nextIndex);
   };
 
+  // Slider settings
   const settings: Settings = {
     speed: 500,
     arrows: false,
@@ -123,10 +124,12 @@ export default function SlickSlider({
     ],
   };
 
+  // Handle previous slide navigation
   const handlePrevious = () => {
     sliderRef.current?.slickPrev();
   };
 
+  // Handle next slide navigation
   const handleNextSlide = () => {
     sliderRef.current?.slickNext();
     if (isEnd) {
@@ -191,4 +194,6 @@ export default function SlickSlider({
       )}
     </Box>
   );
-}
+};
+
+export default SlickSlider;

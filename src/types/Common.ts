@@ -5,7 +5,7 @@ export enum MEDIA_TYPE {
   Tv = "tv",
 }
 
-export type Company = {
+export interface Company {
   description: string;
   headquarters: string;
   homepage: string;
@@ -14,23 +14,25 @@ export type Company = {
   name: string;
   origin_country: string;
   parent_company: null | object;
-};
+}
 
-export type Country = {
+export interface Country {
   iso_3166_1: string;
   english_name: string;
-};
+}
 
-export type Language = {
+export interface Language {
   iso_639_1: string;
   english_name: string;
   name: string;
-};
+}
 
-export type PaginatedResult = {
+export interface PaginatedResult {
   page: number;
   total_pages: number;
   total_results: number;
-};
+}
 
-export type PaginatedMovieResult = PaginatedResult & { results: Movie[] };
+export interface PaginatedMovieResult extends PaginatedResult {
+  results: Movie[];
+}

@@ -1,7 +1,7 @@
 import { Company, Country, Language } from './Common';
 import { Genre } from './Genre';
 
-export type Appended_Video = {
+export interface Appended_Video {
   id: string;
   iso_639_1: string;
   iso_3166_1: string;
@@ -12,9 +12,9 @@ export type Appended_Video = {
   site: string;
   size: number;
   type: string;
-};
+}
 
-export type MovieDetail = {
+export interface MovieDetail {
   adult: boolean;
   backdrop_path: string | null;
   belongs_to_collection: null;
@@ -41,9 +41,9 @@ export type MovieDetail = {
   videos: { results: Appended_Video[] };
   vote_average: number;
   vote_count: number;
-};
+}
 
-export type Movie = {
+export interface Movie {
   videos: any;
   poster_path: string | null;
   adult: boolean;
@@ -59,4 +59,4 @@ export type Movie = {
   vote_count: number;
   video: boolean;
   vote_average: number;
-};
+}

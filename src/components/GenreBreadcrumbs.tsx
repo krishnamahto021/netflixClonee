@@ -18,10 +18,10 @@ interface GenreBreadcrumbsProps extends BreadcrumbsProps {
   genres: string[];
 }
 
-export default function GenreBreadcrumbs({
+const GenreBreadcrumbs: React.FC<GenreBreadcrumbsProps> = ({
   genres,
   ...others
-}: GenreBreadcrumbsProps) {
+}) => {
   return (
     <Breadcrumbs separator={Separator} {...others}>
       {genres.map((genre, idx) => (
@@ -31,4 +31,6 @@ export default function GenreBreadcrumbs({
       ))}
     </Breadcrumbs>
   );
-}
+};
+
+export default GenreBreadcrumbs;

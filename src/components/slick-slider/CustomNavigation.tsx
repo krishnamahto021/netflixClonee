@@ -4,6 +4,7 @@ import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { MouseEventHandler, ReactNode } from "react";
 
+// Styled component for the arrow navigation
 const ArrowStyle = styled(Box)(({ theme }) => ({
   top: 0,
   bottom: 0,
@@ -16,7 +17,6 @@ const ArrowStyle = styled(Box)(({ theme }) => ({
   alignItems: "center",
   justifyContent: "center",
   color: theme.palette.common.white,
-  // background: theme.palette.grey[700],
   transition: theme.transitions.create("opacity"),
   "&:hover": {
     opacity: 0.8,
@@ -27,7 +27,8 @@ const ArrowStyle = styled(Box)(({ theme }) => ({
   },
 }));
 
-interface CustomNaviationProps {
+// Interface for props
+interface CustomNavigationProps {
   isEnd: boolean;
   arrowWidth: number;
   children: ReactNode;
@@ -36,14 +37,15 @@ interface CustomNaviationProps {
   onPrevious: MouseEventHandler<HTMLDivElement>;
 }
 
-export default function CustomNavigation({
+// Functional component using arrow functions
+const CustomNavigation: React.FC<CustomNavigationProps> = ({
   isEnd,
   onNext,
   children,
   onPrevious,
   arrowWidth,
   activeSlideIndex,
-}: CustomNaviationProps) {
+}) => {
   return (
     <>
       {activeSlideIndex > 0 && (
@@ -54,8 +56,6 @@ export default function CustomNavigation({
             width: { xs: arrowWidth / 2, sm: arrowWidth },
             borderTopRightRadius: { xs: "4px" },
             borderBottomRightRadius: { xs: "4px" },
-            // backgroundImage: (theme) =>
-            //   `linear-gradient(to right, ${theme.palette.background.default} 0%, rgba(0,0,0,0) 100%)`,
           }}
         >
           <ArrowBackIosNewIcon />
@@ -63,6 +63,7 @@ export default function CustomNavigation({
       )}
 
       {children}
+
       {!isEnd && (
         <ArrowStyle
           onClick={onNext}
@@ -71,8 +72,6 @@ export default function CustomNavigation({
             width: { xs: arrowWidth / 2, sm: arrowWidth },
             borderTopLeftRadius: { xs: "4px" },
             borderBottomLeftRadius: { xs: "4px" },
-            // backgroundImage: (theme) =>
-            //   `linear-gradient(to left, ${theme.palette.background.default} 0%, rgba(0,0,0,0) 100%)`,
           }}
         >
           <ArrowForwardIosIcon />
@@ -80,4 +79,6 @@ export default function CustomNavigation({
       )}
     </>
   );
-}
+};
+
+export default CustomNavigation;

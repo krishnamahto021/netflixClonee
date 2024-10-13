@@ -2,7 +2,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 
-export default function Footer() {
+const Footer: React.FC = () => {
   return (
     <Box
       component="footer"
@@ -22,9 +22,10 @@ export default function Footer() {
         }}
       >
         <Typography color="grey.700" variant="h6" component="span">
-      
         </Typography>
       </Divider>
     </Box>
   );
-}
+};
+
+export default Footer;

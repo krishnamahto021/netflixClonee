@@ -13,11 +13,12 @@ interface GridWithInfiniteScrollProps {
   data: PaginatedMovieResult;
   handleNext: (page: number) => void;
 }
-export default function GridWithInfiniteScroll({
+
+const GridWithInfiniteScroll: React.FC<GridWithInfiniteScrollProps> = ({
   genre,
   data,
   handleNext,
-}: GridWithInfiniteScrollProps) {
+}) => {
   const intersectionRef = useRef<HTMLDivElement>(null);
   const intersection = useIntersectionObserver(intersectionRef);
 
@@ -29,7 +30,7 @@ export default function GridWithInfiniteScroll({
     ) {
       handleNext(data.page + 1);
     }
-  }, [intersection]);
+  }, [intersection, data.page, data.total_pages, handleNext]);
 
   return (
     <>
@@ -42,10 +43,9 @@ export default function GridWithInfiniteScroll({
           bgcolor: "inherit",
         }}
       >
-        <Typography
-          variant="h5"
-          sx={{ color: "text.primary", mb: 2 }}
-        >{`${genre.name} Movies`}</Typography>
+        <Typography variant="h5" sx={{ color: "text.primary", mb: 2 }}>
+          {`${genre.name} Movies`}
+        </Typography>
         <Grid container spacing={2}>
           {data.results
             .filter((v) => !!v.backdrop_path)
@@ -66,4 +66,6 @@ export default function GridWithInfiniteScroll({
       <Box sx={{ display: "hidden" }} ref={intersectionRef} />
     </>
   );
-}
+};
+
+export default GridWithInfiniteScroll;

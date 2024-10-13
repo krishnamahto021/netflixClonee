@@ -38,9 +38,8 @@ export default function TopTrailer({ mediaType }: TopTrailerProps) {
   const playerRef = useRef<Player | null>(null);
   const isOffset = useOffSetTop(window.innerWidth * 0.5625);
   const { setDetailType } = useDetailModal();
-  const maturityRate = useMemo(() => {
-    return getRandomNumber(20);
-  }, []);
+
+  const maturityRate = useMemo(() => getRandomNumber(20), []);
 
   const handleReady = useCallback((player: Player) => {
     playerRef.current = player;
@@ -48,20 +47,15 @@ export default function TopTrailer({ mediaType }: TopTrailerProps) {
 
   useEffect(() => {
     if (playerRef.current) {
-      if (isOffset) {
-        playerRef.current.pause();
-      } else {
-        if (playerRef.current.paused()) {
-          playerRef.current.play();
-        }
-      }
+      isOffset ? playerRef.current.pause() : playerRef.current.play();
     }
   }, [isOffset]);
 
   useEffect(() => {
-    if (data && data.results) {
-      const videos = data.results.filter((item) => !!item.backdrop_path);
-      setVideo(videos[getRandomNumber(videos.length)]);
+    if (data?.results) {
+      const videos = data.results.filter(item => item.backdrop_path);
+      const randomVideo = videos[getRandomNumber(videos.length)];
+      setVideo(randomVideo);
     }
   }, [data]);
 
@@ -71,7 +65,7 @@ export default function TopTrailer({ mediaType }: TopTrailerProps) {
     }
   }, [video]);
 
-  const handleMute = useCallback((status: boolean) => {
+  const toggleMute = useCallback((status: boolean) => {
     if (playerRef.current) {
       playerRef.current.muted(!status);
       setMuted(!status);
@@ -79,14 +73,11 @@ export default function TopTrailer({ mediaType }: TopTrailerProps) {
   }, []);
 
   return (
-    <Box sx={{ position: "relative", zIndex: 1}}>
+    <Box sx={{ position: "relative", zIndex: 1 }}>
       <Box
         sx={{
           mb: 3,
           pb: "40%",
-          top: 0,
-          left: 0,
-          right: 0,
           position: "relative",
         }}
       >
@@ -108,7 +99,7 @@ export default function TopTrailer({ mediaType }: TopTrailerProps) {
                   position: "absolute",
                 }}
               >
-                {detail && (
+                {detail && detail.videos.results.length > 0 && (
                   <VideoJSPlayer
                     options={{
                       loop: true,
@@ -121,9 +112,7 @@ export default function TopTrailer({ mediaType }: TopTrailerProps) {
                       sources: [
                         {
                           type: "video/youtube",
-                          src: `https://www.youtube.com/watch?v=${
-                            detail.videos.results[0]?.key || "L3oOldViIgY"
-                          }`,
+                          src: `https://www.youtube.com/watch?v=${detail.videos.results[0]?.key || "L3oOldViIgY"}`,
                         },
                       ],
                     }}
@@ -132,29 +121,22 @@ export default function TopTrailer({ mediaType }: TopTrailerProps) {
                 )}
                 <Box
                   sx={{
-                    background: `linear-gradient(77deg,rgba(0,0,0,.6),transparent 85%)`,
+                    background: "linear-gradient(77deg,rgba(0,0,0,.6),transparent 85%)",
+                    position: "absolute",
                     top: 0,
                     left: 0,
-                    bottom: 0,
                     right: "26.09%",
-                    opacity: 1,
-                    position: "absolute",
+                    bottom: 0,
                     transition: "opacity .5s",
                   }}
                 />
                 <Box
                   sx={{
                     backgroundColor: "transparent",
-                    backgroundImage:
-                      "linear-gradient(180deg,hsla(0,0%,8%,0) 0,hsla(0,0%,8%,.15) 15%,hsla(0,0%,8%,.35) 29%,hsla(0,0%,8%,.58) 44%,#141414 68%,#141414)",
-                    backgroundRepeat: "repeat-x",
-                    backgroundPosition: "0px top",
-                    backgroundSize: "100% 100%",
+                    backgroundImage: "linear-gradient(180deg,hsla(0,0%,8%,0) 0,hsla(0,0%,8%,.15) 15%,hsla(0,0%,8%,.35) 29%,hsla(0,0%,8%,.58) 44%,#141414 68%,#141414)",
                     bottom: 0,
                     position: "absolute",
                     height: "14.7vw",
-                    opacity: 1,
-                    top: "auto",
                     width: "100%",
                   }}
                 />
@@ -170,10 +152,10 @@ export default function TopTrailer({ mediaType }: TopTrailerProps) {
                 >
                   <NetflixIconButton
                     size="large"
-                    onClick={() => handleMute(muted)}
+                    onClick={() => toggleMute(muted)}
                     sx={{ zIndex: 2 }}
                   >
-                    {!muted ? <VolumeUpIcon /> : <VolumeOffIcon />}
+                    {muted ? <VolumeOffIcon /> : <VolumeUpIcon />}
                   </NetflixIconButton>
                   <MaturityRate>{`${maturityRate}+`}</MaturityRate>
                 </Stack>

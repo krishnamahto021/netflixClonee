@@ -34,7 +34,7 @@ const StyledSlider = styled(Slider)({
   },
 });
 
-export default function VolumeControllers({
+const VolumeControllers = ({
   value,
   handleVolume,
   handleVolumeToggle,
@@ -44,18 +44,9 @@ export default function VolumeControllers({
   handleVolume: SliderUnstyledOwnProps["onChange"];
   handleVolumeToggle: React.MouseEventHandler<HTMLButtonElement>;
   muted: boolean;
-}) {
+}) => {
   return (
-    <Stack
-      direction="row"
-      alignItems="center"
-      spacing={{ xs: 0.5, sm: 1 }}
-      // sx={{
-      //   "&:hover NetflixSlider-root": {
-      //     display: "inline-block",
-      //   },
-      // }}
-    >
+    <Stack direction="row" alignItems="center" spacing={{ xs: 0.5, sm: 1 }}>
       <PlayerControlButton onClick={handleVolumeToggle}>
         {!muted ? <VolumeUpIcon /> : <VolumeOffIcon />}
       </PlayerControlButton>
@@ -69,4 +60,6 @@ export default function VolumeControllers({
       />
     </Stack>
   );
-}
+};
+
+export default VolumeControllers;

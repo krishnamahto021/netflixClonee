@@ -14,7 +14,7 @@ import 'react-toastify/dist/ReactToastify.css';
 // Import MyListProvider
 import { MyListProvider } from 'src/hooks/MyListContext';
 
-export default function MainLayout() {
+const MainLayout = () => {
   const location = useLocation();
   const navigation = useNavigation();
 
@@ -44,4 +44,6 @@ export default function MainLayout() {
       {location.pathname !== `/${MAIN_PATH.watch}` && <Footer />}
     </Box>
   );
-}
+};
+
+export default MainLayout;

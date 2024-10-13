@@ -7,11 +7,7 @@ interface MotionContainerProps extends BoxProps {
   open?: boolean;
 }
 
-export default function MotionContainer({
-  open,
-  children,
-  ...other
-}: MotionContainerProps) {
+const MotionContainer: React.FC<MotionContainerProps> = ({ open, children, ...other }) => {
   return (
     <Box
       initial={false}
@@ -23,4 +19,6 @@ export default function MotionContainer({
       {children}
     </Box>
   );
-}
+};
+
+export default MotionContainer;
