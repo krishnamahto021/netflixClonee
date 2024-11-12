@@ -44,9 +44,9 @@ export function Component() {
   });
 
   const navigate = useNavigate();
-  const [playerInitialized, setPlayerInitialized] = useState<Boolean>(false);
-  const [showTitle, setShowTitle] = useState<Boolean>(true);
-  const location = useLocation(); // Get location
+  const [playerInitialized, setPlayerInitialized] = useState<boolean>(false);
+  const [showTitle, setShowTitle] = useState<boolean>(false);
+  const location = useLocation();
   const { videoId, videoTitle } = location.state || {};
   const videoUrl = videoId
     ? `https://www.youtube.com/watch?v=${videoId}`
@@ -79,37 +79,47 @@ export function Component() {
 
   const handlePlayerReady = (player: Player): void => {
     player.on("pause", () => {
-      setPlayerState((draft) => ({ ...draft, paused: true }));
+      setPlayerState((prev) => ({ ...prev, paused: true }));
     });
 
     player.on("play", () => {
-      setPlayerState((draft) => ({ ...draft, paused: false }));
+      setPlayerState((prev) => ({ ...prev, paused: false }));
     });
 
     player.on("timeupdate", () => {
-      setPlayerState((draft) => ({
-        ...draft,
-        playedSeconds: player.currentTime(),
-      }));
+      const currentTime = player.currentTime();
+      if (typeof currentTime === "number") {
+        setPlayerState((prev) => ({
+          ...prev,
+          playedSeconds: currentTime,
+        }));
+      }
     });
 
     player.one("durationchange", () => {
       setPlayerInitialized(true);
-      setPlayerState((draft) => ({ ...draft, duration: player.duration() }));
+      const duration = player.duration();
+      if (typeof duration === "number") {
+        setPlayerState((prev) => ({ ...prev, duration }));
+      }
     });
 
     playerRef.current = player;
 
-    setPlayerState((draft) => ({ ...draft, paused: player.paused() }));
+    setPlayerState((prev) => ({ ...prev, paused: player.paused() }));
   };
 
   const handleVolumeChange: SliderUnstyledOwnProps["onChange"] = (_, value) => {
-    playerRef.current?.volume((value as number) / 100);
-    setPlayerState((draft) => ({ ...draft, volume: (value as number) / 100 }));
+    if (playerRef.current && typeof value === "number") {
+      playerRef.current.volume(value / 100);
+      setPlayerState((prev) => ({ ...prev, volume: value / 100 }));
+    }
   };
 
   const handleSeekTo = (v: number) => {
-    playerRef.current?.currentTime(v);
+    if (playerRef.current) {
+      playerRef.current.currentTime(v);
+    }
   };
 
   const handleGoBack = () => {
@@ -119,10 +129,10 @@ export function Component() {
   const toggleFullScreen = useCallback(() => {
     if (!document.fullscreenElement) {
       containerRef.current?.requestFullscreen();
-      setPlayerState((draft) => ({ ...draft, isFullScreen: true }));
+      setPlayerState((prev) => ({ ...prev, isFullScreen: true }));
     } else {
       document.exitFullscreen();
-      setPlayerState((draft) => ({ ...draft, isFullScreen: false }));
+      setPlayerState((prev) => ({ ...prev, isFullScreen: false }));
     }
   }, []);
 
@@ -200,11 +210,7 @@ export function Component() {
               sx={{ position: "absolute", bottom: 20, left: 0, right: 0 }}
             >
               <Stack direction="row" alignItems="center" spacing={1}>
-                <PlayerSeekbar
-                  playedSeconds={playerState.playedSeconds}
-                  duration={playerState.duration}
-                  seekTo={handleSeekTo}
-                />
+                <PlayerSeekbar />
               </Stack>
 
               <Stack direction="row" alignItems="center">
@@ -236,11 +242,13 @@ export function Component() {
                   <VolumeControllers
                     muted={playerState.muted}
                     handleVolumeToggle={() => {
-                      playerRef.current?.muted(!playerState.muted);
-                      setPlayerState((draft) => ({
-                        ...draft,
-                        muted: !draft.muted,
-                      }));
+                      if (playerRef.current) {
+                        playerRef.current.muted(!playerState.muted);
+                        setPlayerState((prev) => ({
+                          ...prev,
+                          muted: !prev.muted,
+                        }));
+                      }
                     }}
                     value={playerState.volume}
                     handleVolume={handleVolumeChange}
