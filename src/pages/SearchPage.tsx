@@ -1,7 +1,7 @@
 import { useLocation } from "react-router-dom";
-import { Container, Typography, Box, styled } from "@mui/material";
+import { Container, Typography, Box, styled, Grid } from "@mui/material";
 import { useSearchMoviesQuery } from "../store/slices/discover";
-import SlickSlider from "../components/slick-slider/SlickSlider";
+import VideoItemWithHover from "src/components/VideoItemWithHover";
 
 const FullWidthContainer = styled(Container)(({ theme }) => ({
   maxWidth: "100% !important",
@@ -11,17 +11,7 @@ const FullWidthContainer = styled(Container)(({ theme }) => ({
   color: "white",
 }));
 
-const StyledSliderBox = styled(Box)(({ theme }) => ({
-  marginBottom: theme.spacing(4),
-  "& .slick-list": {
-    margin: "0 -15px",
-  },
-  "& .slick-slide": {
-    padding: "0 15px",
-  },
-}));
-
-export default function SearchPage() {
+const SearchPage = () => {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const query = searchParams.get("q") || "";
@@ -41,7 +31,12 @@ export default function SearchPage() {
 
   return (
     <FullWidthContainer>
-      <Typography variant="h4" component="h1" sx={{ mx: '4.4rem' }} gutterBottom>
+      <Typography
+        variant="h4"
+        component="h1"
+        sx={{ mx: "4.4rem" }}
+        gutterBottom
+      >
         Search Results for "{query}"
       </Typography>
       {isLoading && (
@@ -57,12 +52,17 @@ export default function SearchPage() {
       {searchResults &&
       searchResults.results &&
       searchResults.results.length > 0 ? (
-        <StyledSliderBox>
-          <SlickSlider
-            data={searchResults}
-            handleNext={handleNextPage}
-          />
-        </StyledSliderBox>
+        <Box sx={{ flexGrow: 1, maxWidth: "calc(100% - 3rem)" }}>
+          <Grid container spacing={2}>
+            {searchResults.results
+              .filter((i) => !!i.backdrop_path)
+              .map((item) => (
+                <Grid item key={item.id} xs={12} sm={6} md={4} lg={2}>
+                  <VideoItemWithHover video={item} />
+                </Grid>
+              ))}
+          </Grid>
+        </Box>
       ) : (
         <Typography variant="h4" component="h1" gutterBottom>
           No results found for "{query}"
@@ -70,4 +70,6 @@ export default function SearchPage() {
       )}
     </FullWidthContainer>
   );
-}
+};
+
+export default SearchPage;

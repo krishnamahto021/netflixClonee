@@ -44,8 +44,8 @@ export function Component() {
   });
 
   const navigate = useNavigate();
-  const [playerInitialized, setPlayerInitialized] = useState(false);
-  const [showTitle, setShowTitle] = useState(true);
+  const [playerInitialized, setPlayerInitialized] = useState<Boolean>(false);
+  const [showTitle, setShowTitle] = useState<Boolean>(true);
   const location = useLocation(); // Get location
   const { videoId, videoTitle } = location.state || {};
   const videoUrl = videoId
@@ -258,9 +258,7 @@ export function Component() {
                     variant="subtitle1"
                     textAlign="center"
                     sx={{ maxWidth: 300, mx: "auto", color: "white" }}
-                  >
-                    
-                  </MaxLineTypography>
+                  ></MaxLineTypography>
                 </Box>
 
                 <Stack
