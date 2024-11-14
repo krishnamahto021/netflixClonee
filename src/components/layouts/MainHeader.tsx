@@ -19,9 +19,13 @@ import SearchBox from "../SearchBox";
 import { styled } from "@mui/material/styles";
 
 const pages = [
+  { name: "Home", path: "/" },
+  { name: "TV Shows", path: "/" },
+  { name: "Movies", path: "/" },
+  { name: "New & Popular", path: "/" },
   { name: "My List", path: "/my-list" },
+  { name: "Browse by Languages", path: "/" },
 ];
-
 
 type Variant = "subtitle1" | "subtitle2" | "body1" | "body2";
 
@@ -29,17 +33,16 @@ interface NetflixLinkProps extends LinkProps {
   variant?: Variant;
 }
 
-
 const NetflixLink = styled(Link, {
   shouldForwardProp: (prop) => prop !== "variant",
 })<NetflixLinkProps>(({ theme, variant = "subtitle1" }) => ({
   ...theme.typography[variant],
   color: theme.palette.common.white,
-  textDecoration: 'none',
-  transition: theme.transitions.create('color', {
+  textDecoration: "none",
+  transition: theme.transitions.create("color", {
     duration: theme.transitions.duration.shorter,
   }),
-  '&:hover': {
+  "&:hover": {
     color: theme.palette.grey[300],
   },
 }));
@@ -47,8 +50,12 @@ const NetflixLink = styled(Link, {
 const MainHeader: React.FC = () => {
   const isOffset = useOffSetTop(APP_BAR_HEIGHT);
 
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
+    null
+  );
+  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
+    null
+  );
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -81,10 +88,11 @@ const MainHeader: React.FC = () => {
               bgcolor: "primary.main",
               boxShadow: (theme) => theme.shadows[4],
             }
-          : { 
+          : {
               bgcolor: "transparent",
               boxShadow: 0,
-              backgroundImage: "linear-gradient(to bottom, rgba(0,0,0,0.7) 10%, rgba(0,0,0,0))"
+              backgroundImage:
+                "linear-gradient(to bottom, rgba(0,0,0,0.7) 10%, rgba(0,0,0,0))",
             }),
       }}
     >
@@ -121,7 +129,12 @@ const MainHeader: React.FC = () => {
             }}
           >
             {pages.map((page) => (
-              <MenuItem key={page.name} onClick={handleCloseNavMenu} component={Link} to={page.path}>
+              <MenuItem
+                key={page.name}
+                onClick={handleCloseNavMenu}
+                component={Link}
+                to={page.path}
+              >
                 <Typography textAlign="center">{page.name}</Typography>
               </MenuItem>
             ))}
@@ -162,7 +175,9 @@ const MainHeader: React.FC = () => {
           ))}
         </Stack>
 
-        <Box sx={{ flexGrow: 0, display: "flex", gap: 2, alignItems: "center" }}>
+        <Box
+          sx={{ flexGrow: 0, display: "flex", gap: 2, alignItems: "center" }}
+        >
           <SearchBox />
           <IconButton color="inherit" aria-label="notifications">
             <NotificationsIcon />

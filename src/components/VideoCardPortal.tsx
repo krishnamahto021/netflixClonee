@@ -53,15 +53,14 @@ export default function VideoCardModal({
   const isInMyList = myList.some((item) => item.id === video.id);
   const playerRef = useRef<Player | null>(null);
 
-  const [getVideoDetail, { data: videoDetail }] = useLazyGetAppendedVideosQuery();
+  const [getVideoDetail, { data: videoDetail }] =
+    useLazyGetAppendedVideosQuery();
 
   const handleMyListClick = () => {
     if (isInMyList) {
       removeFromMyList(video.id);
-      toast.success(`${video.title} removed from My List`);
     } else {
       addToMyList(video);
-      toast.success(`${video.title} added to My List`);
     }
   };
 
