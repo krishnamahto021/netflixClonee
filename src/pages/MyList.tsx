@@ -15,10 +15,10 @@ const MyList = () => {
           Your list is empty. Add some movies or TV shows!
         </Typography>
       ) : (
-        <Box sx={{ flexGrow: 1, maxWidth: "calc(100% - 3rem)" }}>
+        <Box sx={{ flexGrow: 1 }}>
           <Grid container spacing={2}>
             {myList.map((item) => (
-              <Grid item key={item.id} xs={12} sm={6} md={4} lg={2}>
+              <Grid item key={item.id} xs={6} sm={6} md={4} lg={2}>
                 <VideoItemWithHover video={item} />
               </Grid>
             ))}
