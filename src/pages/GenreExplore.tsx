@@ -9,10 +9,14 @@ import { CustomGenre, Genre } from "src/types/Genre";
 import { genreSliceEndpoints } from "src/store/slices/genre";
 import store from "src/store";
 
+// Define a type alias for repeated union type
+type GenreType = CustomGenre | Genre | undefined;
+
 export async function loader({ params }: LoaderFunctionArgs) {
-  let genre: CustomGenre | Genre | undefined = COMMON_TITLES.find(
+  let genre: GenreType = COMMON_TITLES.find(
     (t) => t.apiString === (params.genreId as string)
   );
+
   if (!genre) {
     const genres = await store
       .dispatch(genreSliceEndpoints.getGenres.initiate(MEDIA_TYPE.Movie))
@@ -24,10 +28,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
 }
 
 const Component = () => {
-  const genre: CustomGenre | Genre | undefined = useLoaderData() as
-    | CustomGenre
-    | Genre
-    | undefined;
+  const genre: GenreType = useLoaderData() as GenreType;
 
   if (genre) {
     return <GridPage mediaType={MEDIA_TYPE.Movie} genre={genre} />;

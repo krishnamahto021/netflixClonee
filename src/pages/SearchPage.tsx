@@ -1,7 +1,7 @@
-import { useLocation } from "react-router-dom";
-import { Container, Typography, Box, styled, Grid } from "@mui/material";
-import { useSearchMoviesQuery } from "../store/slices/discover";
-import VideoItemWithHover from "src/components/VideoItemWithHover";
+import { useLocation } from "react-router-dom"
+import { Container, Typography, Box, styled, Grid } from "@mui/material"
+import { useSearchMoviesQuery } from "../store/slices/discover"
+import VideoItemWithHover from "src/components/VideoItemWithHover"
 
 const FullWidthContainer = styled(Container)(({ theme }) => ({
   maxWidth: "100% !important",
@@ -9,12 +9,12 @@ const FullWidthContainer = styled(Container)(({ theme }) => ({
   marginTop: theme.spacing(8),
   paddingTop: theme.spacing(12),
   color: "white",
-}));
+}))
 
 const SearchPage = () => {
-  const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
-  const query = searchParams.get("q") || "";
+  const location = useLocation()
+  const searchParams = new URLSearchParams(location.search)
+  const query = searchParams.get("q") ?? ""
 
   const {
     data: searchResults,
@@ -23,11 +23,11 @@ const SearchPage = () => {
     refetch,
   } = useSearchMoviesQuery({
     query,
-  });
+  })
 
-  const handleNextPage = () => {
-    refetch();
-  };
+  function handleNextPage() {
+    refetch()
+  }
 
   return (
     <FullWidthContainer>
@@ -49,9 +49,7 @@ const SearchPage = () => {
           Error fetching search results
         </Typography>
       )}
-      {searchResults &&
-      searchResults.results &&
-      searchResults.results.length > 0 ? (
+      {searchResults?.results?.length ? (
         <Box sx={{ flexGrow: 1, maxWidth: "calc(100% - 3rem)" }}>
           <Grid container spacing={2}>
             {searchResults.results
@@ -69,7 +67,7 @@ const SearchPage = () => {
         </Typography>
       )}
     </FullWidthContainer>
-  );
-};
+  )
+}
 
-export default SearchPage;
+export default SearchPage

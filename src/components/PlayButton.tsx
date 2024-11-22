@@ -1,14 +1,19 @@
-import Button, { ButtonProps } from "@mui/material/Button";
-import PlayArrowIcon from "@mui/icons-material/PlayArrow";
-import { useNavigate } from "react-router-dom";
+import Button, { ButtonProps } from "@mui/material/Button"
+import PlayArrowIcon from "@mui/icons-material/PlayArrow"
+import { useNavigate } from "react-router-dom"
 
 interface PlayButtonProps extends ButtonProps {
-  videoId?: string;
-  videoTitle?: string;
+  videoId?: string
+  videoTitle?: string
 }
 
-export default function PlayButton({ sx, videoId, videoTitle, ...others }: PlayButtonProps) {
-  const navigate = useNavigate();
+export default function PlayButton({
+  sx,
+  videoId,
+  videoTitle,
+  ...others
+}: Readonly<PlayButtonProps>) {
+  const navigate = useNavigate()
 
   const handleClick = () => {
     if (videoId) {
@@ -17,9 +22,9 @@ export default function PlayButton({ sx, videoId, videoTitle, ...others }: PlayB
           videoId,
           videoTitle,
         },
-      });
+      })
     }
-  };
+  }
 
   return (
     <Button
@@ -40,5 +45,5 @@ export default function PlayButton({ sx, videoId, videoTitle, ...others }: PlayB
     >
       Play
     </Button>
-  );
+  )
 }

@@ -1,38 +1,37 @@
-import { useState, useRef, useMemo, useCallback, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import Player from "video.js/dist/types/player";
-import { Box, Stack, Typography } from "@mui/material";
-import { SliderUnstyledOwnProps } from "@mui/base/SliderUnstyled";
-import PlayArrowIcon from "@mui/icons-material/PlayArrow";
-import PauseIcon from "@mui/icons-material/Pause";
-import SkipNextIcon from "@mui/icons-material/SkipNext";
-import FullscreenIcon from "@mui/icons-material/Fullscreen";
-import FullscreenExitIcon from "@mui/icons-material/FullscreenExit";
-import SettingsIcon from "@mui/icons-material/Settings";
-import BrandingWatermarkOutlinedIcon from "@mui/icons-material/BrandingWatermarkOutlined";
-import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
-import useWindowSize from "src/hooks/useWindowSize";
-import { formatTime } from "src/utils/common";
-import MaxLineTypography from "src/components/MaxLineTypography";
-import VolumeControllers from "src/components/watch/VolumeControllers";
-import VideoJSPlayer from "src/components/watch/VideoJSPlayer";
-import PlayerSeekbar from "src/components/watch/PlayerSeekbar";
-import PlayerControlButton from "src/components/watch/PlayerControlButton";
-import { useLocation } from "react-router-dom";
+import { useState, useRef, useMemo, useCallback, useEffect } from "react"
+import { useNavigate, useLocation } from "react-router-dom"
+import Player from "video.js/dist/types/player"
+import { Box, Stack, Typography } from "@mui/material"
+import { SliderUnstyledOwnProps } from "@mui/base/SliderUnstyled"
+import PlayArrowIcon from "@mui/icons-material/PlayArrow"
+import PauseIcon from "@mui/icons-material/Pause"
+import SkipNextIcon from "@mui/icons-material/SkipNext"
+import FullscreenIcon from "@mui/icons-material/Fullscreen"
+import FullscreenExitIcon from "@mui/icons-material/FullscreenExit"
+import SettingsIcon from "@mui/icons-material/Settings"
+import BrandingWatermarkOutlinedIcon from "@mui/icons-material/BrandingWatermarkOutlined"
+import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace"
+import useWindowSize from "src/hooks/useWindowSize"
+import { formatTime } from "src/utils/common"
+import MaxLineTypography from "src/components/MaxLineTypography"
+import VolumeControllers from "src/components/watch/VolumeControllers"
+import VideoJSPlayer from "src/components/watch/VideoJSPlayer"
+import PlayerSeekbar from "src/components/watch/PlayerSeekbar"
+import PlayerControlButton from "src/components/watch/PlayerControlButton"
 
 interface PlayerState {
-  paused: boolean;
-  muted: boolean;
-  playedSeconds: number;
-  duration: number;
-  volume: number;
-  loaded: number;
-  isFullScreen: boolean;
+  paused: boolean
+  muted: boolean
+  playedSeconds: number
+  duration: number
+  volume: number
+  loaded: number
+  isFullScreen: boolean
 }
 
 export function Component() {
-  const playerRef = useRef<Player | null>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const playerRef = useRef<Player | null>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
   const [playerState, setPlayerState] = useState<PlayerState>({
     paused: false,
     muted: false,
@@ -41,17 +40,17 @@ export function Component() {
     volume: 0.8,
     loaded: 0,
     isFullScreen: false,
-  });
+  })
 
-  const navigate = useNavigate();
-  const [playerInitialized, setPlayerInitialized] = useState<boolean>(false);
-  const [showTitle, setShowTitle] = useState<boolean>(false);
-  const location = useLocation();
-  const { videoId, videoTitle } = location.state || {};
+  const navigate = useNavigate()
+  const [playerInitialized, setPlayerInitialized] = useState<boolean>(false)
+  const [showTitle, setShowTitle] = useState<boolean>(false)
+  const location = useLocation()
+  const { videoId, videoTitle } = location.state || {}
   const videoUrl = videoId
     ? `https://www.youtube.com/watch?v=${videoId}`
-    : "https://bitmovin-a.akamaihd.net/content/sintel/hls/playlist.m3u8";
-  const windowSize = useWindowSize();
+    : "https://bitmovin-a.akamaihd.net/content/sintel/hls/playlist.m3u8"
+  const windowSize = useWindowSize()
 
   const videoJsOptions = useMemo(() => {
     return {
@@ -66,77 +65,77 @@ export function Component() {
           type: "video/youtube",
         },
       ],
-    };
-  }, [windowSize, videoUrl]);
+    }
+  }, [windowSize, videoUrl])
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setShowTitle(false);
-    }, 5000);
+      setShowTitle(false)
+    }, 5000)
 
-    return () => clearTimeout(timer);
-  }, []);
+    return () => clearTimeout(timer)
+  }, [])
 
   const handlePlayerReady = (player: Player): void => {
     player.on("pause", () => {
-      setPlayerState((prev) => ({ ...prev, paused: true }));
-    });
+      setPlayerState((prev) => ({ ...prev, paused: true }))
+    })
 
     player.on("play", () => {
-      setPlayerState((prev) => ({ ...prev, paused: false }));
-    });
+      setPlayerState((prev) => ({ ...prev, paused: false }))
+    })
 
     player.on("timeupdate", () => {
-      const currentTime = player.currentTime();
+      const currentTime = player.currentTime()
       if (typeof currentTime === "number") {
         setPlayerState((prev) => ({
           ...prev,
           playedSeconds: currentTime,
-        }));
+        }))
       }
-    });
+    })
 
     player.one("durationchange", () => {
-      setPlayerInitialized(true);
-      const duration = player.duration();
+      setPlayerInitialized(true)
+      const duration = player.duration()
       if (typeof duration === "number") {
-        setPlayerState((prev) => ({ ...prev, duration }));
+        setPlayerState((prev) => ({ ...prev, duration }))
       }
-    });
+    })
 
-    playerRef.current = player;
+    playerRef.current = player
 
-    setPlayerState((prev) => ({ ...prev, paused: player.paused() }));
-  };
+    setPlayerState((prev) => ({ ...prev, paused: player.paused() }))
+  }
 
   const handleVolumeChange: SliderUnstyledOwnProps["onChange"] = (_, value) => {
     if (playerRef.current && typeof value === "number") {
-      playerRef.current.volume(value / 100);
-      setPlayerState((prev) => ({ ...prev, volume: value / 100 }));
+      playerRef.current.volume(value / 100)
+      setPlayerState((prev) => ({ ...prev, volume: value / 100 }))
     }
-  };
+  }
 
-  const handleSeekTo = (v: number) => {
+  function handleSeekTo(v: number) {
     if (playerRef.current) {
-      playerRef.current.currentTime(v);
+      playerRef.current.currentTime(v)
     }
-  };
+  }
 
   const handleGoBack = () => {
-    navigate("/browse");
-  };
+    navigate("/browse")
+  }
 
   const toggleFullScreen = useCallback(() => {
     if (!document.fullscreenElement) {
-      containerRef.current?.requestFullscreen();
-      setPlayerState((prev) => ({ ...prev, isFullScreen: true }));
+      containerRef.current?.requestFullscreen()
+      setPlayerState((prev) => ({ ...prev, isFullScreen: true }))
     } else {
-      document.exitFullscreen();
-      setPlayerState((prev) => ({ ...prev, isFullScreen: false }));
+      document.exitFullscreen()
+      setPlayerState((prev) => ({ ...prev, isFullScreen: false }))
     }
-  }, []);
+  }, [])
 
-  if (!!videoJsOptions.width) {
+  if (videoJsOptions.width) {
     return (
       <Box
         ref={containerRef}
@@ -222,7 +221,7 @@ export function Component() {
                   {!playerState.paused ? (
                     <PlayerControlButton
                       onClick={() => {
-                        playerRef.current?.pause();
+                        playerRef.current?.pause()
                       }}
                     >
                       <PauseIcon />
@@ -230,7 +229,7 @@ export function Component() {
                   ) : (
                     <PlayerControlButton
                       onClick={() => {
-                        playerRef.current?.play();
+                        playerRef.current?.play()
                       }}
                     >
                       <PlayArrowIcon />
@@ -243,11 +242,11 @@ export function Component() {
                     muted={playerState.muted}
                     handleVolumeToggle={() => {
                       if (playerRef.current) {
-                        playerRef.current.muted(!playerState.muted);
+                        playerRef.current.muted(!playerState.muted)
                         setPlayerState((prev) => ({
                           ...prev,
                           muted: !prev.muted,
-                        }));
+                        }))
                       }
                     }}
                     value={playerState.volume}
@@ -293,9 +292,9 @@ export function Component() {
           </Box>
         )}
       </Box>
-    );
+    )
   }
-  return null;
+  return null
 }
 
-Component.displayName = "WatchPage";
+Component.displayName = "WatchPage"

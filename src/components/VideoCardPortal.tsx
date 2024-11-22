@@ -25,7 +25,6 @@ import { useGetConfigurationQuery } from "src/store/slices/configuration";
 import { MEDIA_TYPE } from "src/types/Common";
 import { useGetGenresQuery } from "src/store/slices/genre";
 import { useMyList } from "src/hooks/MyListContext";
-import { toast } from "react-toastify";
 import VideoJSPlayer from "./watch/VideoJSPlayer";
 import { useLazyGetAppendedVideosQuery } from "src/store/slices/discover";
 import Player from "video.js/dist/types/player";

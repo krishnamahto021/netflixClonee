@@ -1,76 +1,76 @@
-import { useEffect, useState, useMemo, useCallback, useRef } from "react";
-import Box from "@mui/material/Box";
-import Stack from "@mui/material/Stack";
-import VolumeUpIcon from "@mui/icons-material/VolumeUp";
-import VolumeOffIcon from "@mui/icons-material/VolumeOff";
-import Player from "video.js/dist/types/player";
-import { useNavigate } from "react-router-dom";
-import { getRandomNumber } from "src/utils/common";
-import MaxLineTypography from "./MaxLineTypography";
-import PlayButton from "./PlayButton";
-import MoreInfoButton from "./MoreInfoButton";
-import NetflixIconButton from "./NetflixIconButton";
-import MaturityRate from "./MaturityRate";
-import useOffSetTop from "src/hooks/useOffSetTop";
-import { useDetailModal } from "src/providers/DetailModalProvider";
-import { MEDIA_TYPE } from "src/types/Common";
+import { useEffect, useState, useMemo, useCallback, useRef } from "react"
+import Box from "@mui/material/Box"
+import Stack from "@mui/material/Stack"
+import VolumeUpIcon from "@mui/icons-material/VolumeUp"
+import VolumeOffIcon from "@mui/icons-material/VolumeOff"
+import Player from "video.js/dist/types/player"
+import { useNavigate } from "react-router-dom"
+import { getRandomNumber } from "src/utils/common"
+import MaxLineTypography from "./MaxLineTypography"
+import PlayButton from "./PlayButton"
+import MoreInfoButton from "./MoreInfoButton"
+import NetflixIconButton from "./NetflixIconButton"
+import MaturityRate from "./MaturityRate"
+import useOffSetTop from "src/hooks/useOffSetTop"
+import { useDetailModal } from "src/providers/DetailModalProvider"
+import { MEDIA_TYPE } from "src/types/Common"
 import {
   useGetVideosByMediaTypeAndCustomGenreQuery,
   useLazyGetAppendedVideosQuery,
-} from "src/store/slices/discover";
-import { Movie } from "src/types/Movie";
-import VideoJSPlayer from "./watch/VideoJSPlayer";
+} from "src/store/slices/discover"
+import { Movie } from "src/types/Movie"
+import VideoJSPlayer from "./watch/VideoJSPlayer"
 
 interface TopTrailerProps {
-  mediaType: MEDIA_TYPE;
+  mediaType: MEDIA_TYPE
 }
 
-export default function TopTrailer({ mediaType }: TopTrailerProps) {
+export default function TopTrailer({ mediaType }: Readonly<TopTrailerProps>) {
   const { data } = useGetVideosByMediaTypeAndCustomGenreQuery({
     mediaType,
     apiString: "popular",
     page: 1,
-  });
+  })
 
-  const [getVideoDetail, { data: detail }] = useLazyGetAppendedVideosQuery();
-  const [video, setVideo] = useState<Movie | null>(null);
-  const [muted, setMuted] = useState(true);
-  const playerRef = useRef<Player | null>(null);
-  const isOffset = useOffSetTop(window.innerWidth * 0.5625);
-  const { setDetailType } = useDetailModal();
+  const [getVideoDetail, { data: detail }] = useLazyGetAppendedVideosQuery()
+  const [video, setVideo] = useState<Movie | null>(null)
+  const [muted, setMuted] = useState(true)
+  const playerRef = useRef<Player | null>(null)
+  const isOffset = useOffSetTop(window.innerWidth * 0.5625)
+  const { setDetailType } = useDetailModal()
 
-  const maturityRate = useMemo(() => getRandomNumber(20), []);
+  const maturityRate = useMemo(() => getRandomNumber(20), [])
 
   const handleReady = useCallback((player: Player) => {
-    playerRef.current = player;
-  }, []);
+    playerRef.current = player
+  }, [])
 
   useEffect(() => {
     if (playerRef.current) {
-      isOffset ? playerRef.current.pause() : playerRef.current.play();
+      isOffset ? playerRef.current.pause() : playerRef.current.play()
     }
-  }, [isOffset]);
+  }, [isOffset])
 
   useEffect(() => {
     if (data?.results) {
-      const videos = data.results.filter(item => item.backdrop_path);
-      const randomVideo = videos[getRandomNumber(videos.length)];
-      setVideo(randomVideo);
+      const videos = data.results.filter((item) => item.backdrop_path)
+      const randomVideo = videos[getRandomNumber(videos.length)]
+      setVideo(randomVideo)
     }
-  }, [data]);
+  }, [data])
 
   useEffect(() => {
     if (video) {
-      getVideoDetail({ mediaType, id: video.id });
+      getVideoDetail({ mediaType, id: video.id })
     }
-  }, [video]);
+  }, [video])
 
   const toggleMute = useCallback((status: boolean) => {
     if (playerRef.current) {
-      playerRef.current.muted(!status);
-      setMuted(!status);
+      playerRef.current.muted(!status)
+      setMuted(!status)
     }
-  }, []);
+  }, [])
 
   return (
     <Box sx={{ position: "relative", zIndex: 1 }}>
@@ -112,7 +112,9 @@ export default function TopTrailer({ mediaType }: TopTrailerProps) {
                       sources: [
                         {
                           type: "video/youtube",
-                          src: `https://www.youtube.com/watch?v=${detail.videos.results[0]?.key || "L3oOldViIgY"}`,
+                          src: `https://www.youtube.com/watch?v=${
+                            detail.videos.results[0]?.key || "L3oOldViIgY"
+                          }`,
                         },
                       ],
                     }}
@@ -121,7 +123,8 @@ export default function TopTrailer({ mediaType }: TopTrailerProps) {
                 )}
                 <Box
                   sx={{
-                    background: "linear-gradient(77deg,rgba(0,0,0,.6),transparent 85%)",
+                    background:
+                      "linear-gradient(77deg,rgba(0,0,0,.6),transparent 85%)",
                     position: "absolute",
                     top: 0,
                     left: 0,
@@ -133,7 +136,8 @@ export default function TopTrailer({ mediaType }: TopTrailerProps) {
                 <Box
                   sx={{
                     backgroundColor: "transparent",
-                    backgroundImage: "linear-gradient(180deg,hsla(0,0%,8%,0) 0,hsla(0,0%,8%,.15) 15%,hsla(0,0%,8%,.35) 29%,hsla(0,0%,8%,.58) 44%,#141414 68%,#141414)",
+                    backgroundImage:
+                      "linear-gradient(180deg,hsla(0,0%,8%,0) 0,hsla(0,0%,8%,.15) 15%,hsla(0,0%,8%,.35) 29%,hsla(0,0%,8%,.58) 44%,#141414 68%,#141414)",
                     bottom: 0,
                     position: "absolute",
                     height: "14.7vw",
@@ -207,7 +211,7 @@ export default function TopTrailer({ mediaType }: TopTrailerProps) {
                     <MoreInfoButton
                       size="large"
                       onClick={() => {
-                        setDetailType({ mediaType, id: video.id });
+                        setDetailType({ mediaType, id: video.id })
                       }}
                     />
                   </Stack>
@@ -218,5 +222,5 @@ export default function TopTrailer({ mediaType }: TopTrailerProps) {
         </Box>
       </Box>
     </Box>
-  );
+  )
 }

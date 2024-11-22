@@ -1,12 +1,13 @@
 import { useState, useEffect, useCallback } from "react";
 
 export default function useOffSetTop(top: number) {
-  const [offsetTop, setOffSetTop] = useState(false);
+  const [offsetTop, setOffsetTop] = useState(false);
+
   const onScroll = useCallback(() => {
-    if (window.pageYOffset > top) {
-      setOffSetTop(true);
+    if (window.scrollY > top) {
+      setOffsetTop(true);
     } else {
-      setOffSetTop(false);
+      setOffsetTop(false);
     }
   }, [top]);
 
@@ -15,7 +16,7 @@ export default function useOffSetTop(top: number) {
     return () => {
       window.removeEventListener("scroll", onScroll);
     };
-  }, [top]);
+  }, [onScroll]); // Add `onScroll` as a dependency
 
   return offsetTop;
 }

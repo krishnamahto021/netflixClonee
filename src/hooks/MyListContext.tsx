@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
+import React, { createContext, useState, useContext, useEffect, ReactNode, useMemo } from 'react';
 import { Movie } from 'src/types/Movie';
 
 interface MyListContextType {
@@ -32,11 +32,17 @@ export const MyListProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     setMyList((prevList) => prevList.filter((item) => item.id !== movieId));
   };
 
-  return (
-    <MyListContext.Provider value={{ myList, addToMyList, removeFromMyList }}>
-      {children}
-    </MyListContext.Provider>
+  // Memoize the value object
+  const value = useMemo(
+    () => ({
+      myList,
+      addToMyList,
+      removeFromMyList,
+    }),
+    [myList] // Dependencies
   );
+
+  return <MyListContext.Provider value={value}>{children}</MyListContext.Provider>;
 };
 
 export const useMyList = () => {

@@ -1,7 +1,9 @@
-import Box from "@mui/material/Box";
-import { ReactNode } from "react";
+import Box from "@mui/material/Box"
+import { ReactNode } from "react"
 
-export default function MaturityRate({ children }: { children: ReactNode }) {
+export default function MaturityRate({
+  children,
+}: Readonly<{ children: ReactNode }>) {
   return (
     <Box
       sx={{
@@ -19,5 +21,5 @@ export default function MaturityRate({ children }: { children: ReactNode }) {
     >
       {children}
     </Box>
-  );
+  )
 }
