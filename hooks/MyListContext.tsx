@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext, useEffect, ReactNode, useMemo } from 'react';
-import { Movie } from 'src/types/Movie';
+import { Movie } from '../types/Movie';
 
 interface MyListContextType {
   myList: Movie[];

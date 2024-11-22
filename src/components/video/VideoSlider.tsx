@@ -1,7 +1,7 @@
 import withPagination from "src/hoc/withPagination"
-import { MEDIA_TYPE } from "src/types/Common"
-import { CustomGenre, Genre } from "src/types/Genre"
-import SlickSlider from "./slick-slider/SlickSlider"
+import { MEDIA_TYPE } from "../../../types/Common"
+import { CustomGenre, Genre } from "../../../types/Genre"
+import SlickSlider from "src/components/slick-slider/SlickSlider"
 
 interface SliderRowForGenreProps {
   genre: Genre | CustomGenre

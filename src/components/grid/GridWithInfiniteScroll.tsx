@@ -3,10 +3,10 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
-import VideoItemWithHover from "./VideoItemWithHover";
-import { CustomGenre, Genre } from "src/types/Genre";
-import { PaginatedMovieResult } from "src/types/Common";
-import useIntersectionObserver from "src/hooks/useIntersectionObserver";
+import VideoItemWithHover from "../VideoItemWithHover";
+import { CustomGenre, Genre } from "../../../types/Genre";
+import { PaginatedMovieResult } from "../../../types/Common";
+import useIntersectionObserver from "../../../hooks/useIntersectionObserver";
 
 interface GridWithInfiniteScrollProps {
   genre: Genre | CustomGenre;

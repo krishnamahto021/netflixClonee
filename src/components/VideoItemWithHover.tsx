@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useRef, forwardRef } from "react"
-import { Movie } from "src/types/Movie"
+import { Movie } from "../../types/Movie"
 import { usePortal } from "src/providers/PortalProvider"
 import { useGetConfigurationQuery } from "src/store/slices/configuration"
 import { Box, Card, CardMedia } from "@mui/material"
-import { useMyList } from "src/hooks/useMyList"
+import { useMyList } from "../../hooks/useMyList"
 
 interface VideoItemWithHoverProps {
   video: Movie

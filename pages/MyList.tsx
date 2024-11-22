@@ -1,7 +1,7 @@
 import React from "react";
 import { Grid, Typography, Box } from "@mui/material";
-import { useMyList } from "src/hooks/MyListContext";
-import VideoItemWithHover from "src/components/VideoItemWithHover";
+import { useMyList } from "../hooks/useMyList";
+import VideoItemWithHover from "../src/components/VideoItemWithHover";
 
 const MyList = () => {
   const { myList } = useMyList();

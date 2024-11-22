@@ -1,38 +1,37 @@
-import { useRef } from "react";
-import { motion } from "framer-motion";
-import Portal from "@mui/material/Portal";
+import { useRef } from "react"
+import { motion } from "framer-motion"
+import Portal from "@mui/material/Portal"
 
-import VideoCardPortal from "./VideoCardPortal";
-import MotionContainer from "./animate/MotionContainer";
+import VideoCardPortal from "./VideoCardPortal"
+import MotionContainer from "../animate/MotionContainer"
 import {
   varZoomIn,
   varZoomInLeft,
   varZoomInRight,
-} from "./animate/variants/zoom/ZoomIn";
-import { usePortalData } from "src/providers/PortalProvider";
+} from "../animate/variants/zoom/ZoomIn"
+import { usePortalData } from "src/providers/PortalProvider"
 
 export default function VideoPortalContainer() {
-  const { miniModalMediaData, anchorElement } = usePortalData();
-  const container = useRef(null);
-  const rect = anchorElement?.getBoundingClientRect();
+  const { miniModalMediaData, anchorElement } = usePortalData()
+  const container = useRef(null)
+  const rect = anchorElement?.getBoundingClientRect()
 
-  const hasToRender = !!miniModalMediaData && !!anchorElement;
-  let isFirstElement = false;
-  let isLastElement = false;
-  let variant = varZoomIn;
+  const hasToRender = !!miniModalMediaData && !!anchorElement
+  let isFirstElement = false
+  let isLastElement = false
+  let variant = varZoomIn
   if (hasToRender) {
-    const parentElement = anchorElement.closest(".slick-active");
-    const nextSiblingOfParentElement = parentElement?.nextElementSibling;
-    const previousSiblingOfParentElement =
-      parentElement?.previousElementSibling;
+    const parentElement = anchorElement.closest(".slick-active")
+    const nextSiblingOfParentElement = parentElement?.nextElementSibling
+    const previousSiblingOfParentElement = parentElement?.previousElementSibling
     if (!previousSiblingOfParentElement?.classList.contains("slick-active")) {
-      isFirstElement = true;
-      variant = varZoomInLeft;
+      isFirstElement = true
+      variant = varZoomInLeft
     } else if (
       !nextSiblingOfParentElement?.classList.contains("slick-active")
     ) {
-      isLastElement = true;
-      variant = varZoomInRight;
+      isLastElement = true
+      variant = varZoomInRight
     }
   }
 
@@ -70,5 +69,5 @@ export default function VideoPortalContainer() {
         />
       </MotionContainer>
     </>
-  );
+  )
 }

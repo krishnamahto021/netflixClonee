@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
-import { Movie } from 'src/types/Movie';
+import { Movie } from '../types/Movie';
 
 export function useMyList() {
   const [myList, setMyList] = useState<Movie[]>(() => {

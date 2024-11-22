@@ -1,11 +1,11 @@
 import { ReactNode, useEffect, useState, useCallback } from "react"
 import { useLocation } from "react-router-dom"
 
-import { INITIAL_DETAIL_STATE } from "src/constant"
+import { INITIAL_DETAIL_STATE } from "../../constants/index"
 import createSafeContext from "src/lib/createSafeContext"
 import { useLazyGetAppendedVideosQuery } from "src/store/slices/discover"
-import { MEDIA_TYPE } from "src/types/Common"
-import { MovieDetail } from "src/types/Movie"
+import { MEDIA_TYPE } from "../../types/Common"
+import { MovieDetail } from "../../types/Movie"
 
 interface DetailType {
   id?: number
@@ -55,7 +55,7 @@ export default function DetailModalProvider({
       value={{
         detail,
         setDetailType: (newDetailType) => {
-          void handleChangeDetail(newDetailType) 
+          void handleChangeDetail(newDetailType)
         },
       }}
     >

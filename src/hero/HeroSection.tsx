@@ -5,21 +5,21 @@ import VolumeUpIcon from "@mui/icons-material/VolumeUp"
 import VolumeOffIcon from "@mui/icons-material/VolumeOff"
 import Player from "video.js/dist/types/player"
 import { useNavigate } from "react-router-dom"
-import { getRandomNumber } from "src/utils/common"
-import MaxLineTypography from "./MaxLineTypography"
-import PlayButton from "./PlayButton"
-import MoreInfoButton from "./MoreInfoButton"
-import NetflixIconButton from "./NetflixIconButton"
-import MaturityRate from "./MaturityRate"
-import useOffSetTop from "src/hooks/useOffSetTop"
+import { getRandomNumber } from "src/utils/index"
+import MaxLineTypography from "../components/MaxLineTypography"
+import PlayButton from "../components/common/button/PlayButton"
+import MoreInfoButton from "../components/common/button/MoreInfoButton"
+import NetflixIconButton from "../components/common/button/NetflixIconButton"
+import MaturityRate from "../components/common/chips/MaturityRate"
+import useOffSetTop from "../../hooks/useOffSetTop"
 import { useDetailModal } from "src/providers/DetailModalProvider"
-import { MEDIA_TYPE } from "src/types/Common"
+import { MEDIA_TYPE } from "../../types/Common"
 import {
   useGetVideosByMediaTypeAndCustomGenreQuery,
   useLazyGetAppendedVideosQuery,
 } from "src/store/slices/discover"
-import { Movie } from "src/types/Movie"
-import VideoJSPlayer from "./watch/VideoJSPlayer"
+import { Movie } from "../../types/Movie"
+import VideoJSPlayer from "../components/watch/VideoJSPlayer"
 
 interface TopTrailerProps {
   mediaType: MEDIA_TYPE

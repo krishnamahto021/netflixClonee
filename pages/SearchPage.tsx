@@ -1,7 +1,7 @@
 import { useLocation } from "react-router-dom"
 import { Container, Typography, Box, styled, Grid } from "@mui/material"
-import { useSearchMoviesQuery } from "../store/slices/discover"
-import VideoItemWithHover from "src/components/VideoItemWithHover"
+import { useSearchMoviesQuery } from "../src/store/slices/discover"
+import VideoItemWithHover from "../src/components/VideoItemWithHover"
 
 const FullWidthContainer = styled(Container)(({ theme }) => ({
   maxWidth: "100% !important",

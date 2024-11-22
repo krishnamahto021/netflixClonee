@@ -13,15 +13,15 @@ import {
   Add as AddIcon,
   PlayCircle as PlayCircleIcon,
 } from "@mui/icons-material"
-import { Movie } from "src/types/Movie"
-import NetflixIconButton from "./NetflixIconButton"
-import MaxLineTypography from "./MaxLineTypography"
-import { formatMinuteToReadable, getRandomNumber } from "src/utils/common"
-import AgeLimitChip from "./AgeLimitChip"
+import { Movie } from "../../../types/Movie"
+import NetflixIconButton from "../common/button/NetflixIconButton"
+import MaxLineTypography from "../MaxLineTypography"
+import { formatMinuteToReadable, getRandomNumber } from "src/utils/index"
+import AgeLimitChip from "../common/chips/AgeLimitChip"
 import { useGetConfigurationQuery } from "src/store/slices/configuration"
-import { useMyList } from "src/hooks/useMyList"
+import { useMyList } from "../../../hooks/useMyList"
 import { useDetailModal } from "src/providers/DetailModalProvider"
-import { MEDIA_TYPE } from "src/types/Common"
+import { MEDIA_TYPE } from "../../../types/Common"
 import { useNavigate } from "react-router-dom"
 
 interface SimilarVideoCardProps {

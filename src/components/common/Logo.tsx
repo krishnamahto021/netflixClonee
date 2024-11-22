@@ -1,6 +1,6 @@
 import Box, { BoxProps } from "@mui/material/Box";
 import { Link as RouterLink } from "react-router-dom";
-import { MAIN_PATH } from "src/constant";
+import { MAIN_PATH } from "../../../constants/index";
 
 export default function Logo({ sx }: BoxProps) {
   return (

@@ -1,17 +1,17 @@
-import React, { useState, useRef, useCallback } from "react";
-import { styled } from "@mui/material/styles";
-import InputBase from "@mui/material/InputBase";
-import SearchIcon from "@mui/icons-material/Search";
-import ClearIcon from "@mui/icons-material/Clear";
-import { useNavigate } from "react-router-dom";
-import { useOutsideClick } from "../hooks/useOutsideClick"; // Import the custom hook
+import React, { useState, useRef, useCallback } from "react"
+import { styled } from "@mui/material/styles"
+import InputBase from "@mui/material/InputBase"
+import SearchIcon from "@mui/icons-material/Search"
+import ClearIcon from "@mui/icons-material/Clear"
+import { useNavigate } from "react-router-dom"
+import { useOutsideClick } from "../../../hooks/useOutsideClick" // Import the custom hook
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   width: "100%",
   display: "flex",
   alignItems: "center",
-}));
+}))
 
 const SearchIconWrapper = styled("div")(({ theme }) => ({
   cursor: "pointer",
@@ -20,7 +20,7 @@ const SearchIconWrapper = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-}));
+}))
 
 const ClearIconWrapper = styled("div")(({ theme }) => ({
   cursor: "pointer",
@@ -29,7 +29,7 @@ const ClearIconWrapper = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-}));
+}))
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: "inherit",
@@ -45,48 +45,48 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
       },
     },
   },
-}));
+}))
 
 export default function SearchBox() {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [expanded, setExpanded] = useState(false); // Track if input is expanded
-  const searchInputRef = useRef<HTMLInputElement>(null); // Explicitly typed as HTMLInputElement
-  const navigate = useNavigate();
-  const searchBoxRef = useRef<HTMLDivElement>(null); // Ref for the entire search box
+  const [searchTerm, setSearchTerm] = useState("")
+  const [expanded, setExpanded] = useState(false) // Track if input is expanded
+  const searchInputRef = useRef<HTMLInputElement>(null) // Explicitly typed as HTMLInputElement
+  const navigate = useNavigate()
+  const searchBoxRef = useRef<HTMLDivElement>(null) // Ref for the entire search box
 
   const handleSearch = useCallback(() => {
     if (searchTerm) {
-      handleSearchNavigate(searchTerm);
+      handleSearchNavigate(searchTerm)
     }
-  }, [searchTerm]);
+  }, [searchTerm])
 
   const handleSearchChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
-      setSearchTerm(event.target.value);
+      setSearchTerm(event.target.value)
     },
     []
-  );
+  )
 
   const handleClearSearch = useCallback(() => {
-    setSearchTerm("");
-    searchInputRef.current?.focus(); // Now TypeScript knows it's an HTMLInputElement
-  }, []);
+    setSearchTerm("")
+    searchInputRef.current?.focus() // Now TypeScript knows it's an HTMLInputElement
+  }, [])
 
   const handleSearchNavigate = (searchTerm: string) => {
-    navigate(`/search?q=${encodeURIComponent(searchTerm)}`);
-  };
+    navigate(`/search?q=${encodeURIComponent(searchTerm)}`)
+  }
 
   const toggleExpand = useCallback(() => {
-    setExpanded(true); // Expand the input field when clicking the search icon
-    searchInputRef.current?.focus(); // Now TypeScript knows it's an HTMLInputElement
-  }, []);
+    setExpanded(true) // Expand the input field when clicking the search icon
+    searchInputRef.current?.focus() // Now TypeScript knows it's an HTMLInputElement
+  }, [])
 
   const collapseInput = useCallback(() => {
-    setExpanded(false);
-  }, []);
+    setExpanded(false)
+  }, [])
 
   // Use the custom hook to collapse the input on outside click
-  useOutsideClick(searchBoxRef, collapseInput);
+  useOutsideClick(searchBoxRef, collapseInput)
 
   return (
     <Search ref={searchBoxRef}>
@@ -100,7 +100,7 @@ export default function SearchBox() {
         inputRef={searchInputRef} // Assign the ref here
         onKeyDown={(e) => {
           if (e.key === "Enter" && searchTerm) {
-            handleSearch();
+            handleSearch()
           }
         }}
         style={{
@@ -114,5 +114,5 @@ export default function SearchBox() {
         </ClearIconWrapper>
       )}
     </Search>
-  );
+  )
 }

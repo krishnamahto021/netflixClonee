@@ -1,7 +1,7 @@
 import withPagination from "src/hoc/withPagination";
-import { MEDIA_TYPE } from "src/types/Common";
-import { CustomGenre, Genre } from "src/types/Genre";
-import GridWithInfiniteScroll from "./GridWithInfiniteScroll";
+import { MEDIA_TYPE } from "../../../types/Common";
+import { CustomGenre, Genre } from "../../../types/Genre";
+import GridWithInfiniteScroll from "../grid/GridWithInfiniteScroll";
 
 interface GridPageProps {
   genre: Genre | CustomGenre;

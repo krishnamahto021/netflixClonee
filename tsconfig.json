@@ -17,6 +17,27 @@
     "jsx": "react-jsx",
     "baseUrl": "."
   },
-  "include": ["src"],
+  "include": [
+    "src",
+    "layouts/MainLayout.tsx",
+    "layouts/Navigation/NetflixNavigationLink.tsx",
+    "pages/HomePage.tsx",
+    "pages/GenreExplore.tsx",
+    "pages/MyList.tsx",
+    "pages/SearchPage.tsx",
+    "pages/WatchPage.tsx",
+    "hooks/useIntersectionObserver.ts",
+    "hooks/useMyList.ts",
+    "hooks/useOutsideClick.tsx",
+    "hooks/useWindowSize.ts",
+    "hooks/useOffSetTop.ts",
+    "hooks/MyListContext.tsx",
+    "types/Movie.ts",
+    "types/Genre.ts",
+    "types/Common.ts",
+    "constants/index.ts",
+    "utils/common.ts",
+    "utils/CustomClassNameSetup.ts"
+  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
