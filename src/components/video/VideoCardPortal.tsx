@@ -34,10 +34,10 @@ interface VideoCardModalProps {
   anchorElement: HTMLElement
 }
 
-export default function VideoCardModal({
+const VideoCardModal: React.FC<VideoCardModalProps> = ({
   video,
   anchorElement,
-}: VideoCardModalProps) {
+}) => {
   const navigate = useNavigate()
   const { data: configuration } = useGetConfigurationQuery(undefined)
   const { data: genres } = useGetGenresQuery(MEDIA_TYPE.Movie)
@@ -245,3 +245,5 @@ export default function VideoCardModal({
     </Card>
   )
 }
+
+export default VideoCardModal

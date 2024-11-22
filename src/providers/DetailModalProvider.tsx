@@ -19,11 +19,11 @@ export interface DetailModalConsumerProps {
 export const [useDetailModal, Provider] =
   createSafeContext<DetailModalConsumerProps>()
 
-export default function DetailModalProvider({
+const DetailModalProvider = ({
   children,
 }: Readonly<{
   children: ReactNode
-}>) {
+}>) => {
   const location = useLocation()
   const [detail, setDetail] = useState<
     { mediaDetail?: MovieDetail } & DetailType
@@ -63,3 +63,5 @@ export default function DetailModalProvider({
     </Provider>
   )
 }
+
+export default DetailModalProvider

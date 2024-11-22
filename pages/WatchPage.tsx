@@ -13,11 +13,11 @@ import BrandingWatermarkOutlinedIcon from "@mui/icons-material/BrandingWatermark
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace"
 import useWindowSize from "../hooks/useWindowSize"
 import { formatTime } from "../utils/common"
-import MaxLineTypography from "src/components/MaxLineTypography"
-import VolumeControllers from "src/components/watch/VolumeControllers"
-import VideoJSPlayer from "src/components/watch/VideoJSPlayer"
-import PlayerSeekbar from "src/components/watch/PlayerSeekbar"
-import PlayerControlButton from "src/components/watch/PlayerControlButton"
+import MaxLineTypography from "../src/components/MaxLineTypography"
+import VolumeControllers from "../src/components/watch/VolumeControllers"
+import VideoJSPlayer from "../src/components/watch/VideoJSPlayer"
+import PlayerSeekbar from "../src/components/watch/PlayerSeekbar"
+import PlayerControlButton from "../src/components/watch/PlayerControlButton"
 
 interface PlayerState {
   paused: boolean

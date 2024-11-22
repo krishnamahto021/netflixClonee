@@ -9,9 +9,7 @@ interface VideoItemWithHoverProps {
   video: Movie
 }
 
-export default function VideoItemWithHover({
-  video,
-}: Readonly<VideoItemWithHoverProps>) {
+const VideoItemWithHover = ({ video }: Readonly<VideoItemWithHoverProps>) => {
   const setPortal = usePortal()
   const elementRef = useRef<HTMLDivElement>(null)
   const [isHovered, setIsHovered] = useState(false)
@@ -33,6 +31,7 @@ export default function VideoItemWithHover({
     />
   )
 }
+export default VideoItemWithHover
 
 interface VideoItemWithHoverPureProps {
   handleHover: (isHovered: boolean) => void

@@ -1,36 +1,45 @@
-import React, { createContext, useState, useContext, useEffect, ReactNode, useMemo } from 'react';
-import { Movie } from '../types/Movie';
+import React, {
+  createContext,
+  useState,
+  useContext,
+  useEffect,
+  ReactNode,
+  useMemo,
+} from "react"
+import { Movie } from "../types/Movie"
 
 interface MyListContextType {
-  myList: Movie[];
-  addToMyList: (movie: Movie) => void;
-  removeFromMyList: (movieId: number) => void;
+  myList: Movie[]
+  addToMyList: (movie: Movie) => void
+  removeFromMyList: (movieId: number) => void
 }
 
-const MyListContext = createContext<MyListContextType | undefined>(undefined);
+const MyListContext = createContext<MyListContextType | undefined>(undefined)
 
-export const MyListProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const MyListProvider: React.FC<{ children: ReactNode }> = ({
+  children,
+}) => {
   const [myList, setMyList] = useState<Movie[]>(() => {
-    const savedList = localStorage.getItem('myList');
-    return savedList ? JSON.parse(savedList) : [];
-  });
+    const savedList = localStorage.getItem("myList")
+    return savedList ? JSON.parse(savedList) : []
+  })
 
   useEffect(() => {
-    localStorage.setItem('myList', JSON.stringify(myList));
-  }, [myList]);
+    localStorage.setItem("myList", JSON.stringify(myList))
+  }, [myList])
 
   const addToMyList = (movie: Movie) => {
     setMyList((prevList) => {
       if (!prevList.some((item) => item.id === movie.id)) {
-        return [...prevList, movie];
+        return [...prevList, movie]
       }
-      return prevList;
-    });
-  };
+      return prevList
+    })
+  }
 
   const removeFromMyList = (movieId: number) => {
-    setMyList((prevList) => prevList.filter((item) => item.id !== movieId));
-  };
+    setMyList((prevList) => prevList.filter((item) => item.id !== movieId))
+  }
 
   // Memoize the value object
   const value = useMemo(
@@ -40,15 +49,17 @@ export const MyListProvider: React.FC<{ children: ReactNode }> = ({ children }) 
       removeFromMyList,
     }),
     [myList] // Dependencies
-  );
+  )
 
-  return <MyListContext.Provider value={value}>{children}</MyListContext.Provider>;
-};
+  return (
+    <MyListContext.Provider value={value}>{children}</MyListContext.Provider>
+  )
+}
 
 export const useMyList = () => {
-  const context = useContext(MyListContext);
+  const context = useContext(MyListContext)
   if (context === undefined) {
-    throw new Error('useMyList must be used within a MyListProvider');
+    throw new Error("useMyList must be used within a MyListProvider")
   }
-  return context;
-};
+  return context
+}

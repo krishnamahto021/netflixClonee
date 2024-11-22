@@ -16,9 +16,7 @@ export const [usePortal, Provider] =
 export const [usePortalData, PortalDataProvider] =
   createSafeContext<PortalDataConsumerProps>()
 
-export default function PortalProvider({
-  children,
-}: Readonly<{ children: ReactNode }>) {
+const PortalProvider = ({ children }: Readonly<{ children: ReactNode }>) => {
   const [anchorElement, setAnchorElement] = useState<HTMLElement | null>(null)
   const [miniModalMediaData, setMiniModalMediaData] = useState<Movie | null>(
     null
@@ -45,3 +43,4 @@ export default function PortalProvider({
     </Provider>
   )
 }
+export default PortalProvider

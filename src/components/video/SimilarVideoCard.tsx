@@ -29,10 +29,10 @@ interface SimilarVideoCardProps {
   onRemoveFromList?: (id: number) => void
 }
 
-export default function SimilarVideoCard({
+export const SimilarVideoCard: React.FC<SimilarVideoCardProps> = ({
   video,
   onRemoveFromList,
-}: Readonly<SimilarVideoCardProps>) {
+}) => {
   const { data: configuration } = useGetConfigurationQuery(undefined)
   const { myList, addToMyList, removeFromMyList } = useMyList()
   const { detail, setDetailType } = useDetailModal()

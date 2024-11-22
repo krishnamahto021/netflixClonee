@@ -7,12 +7,12 @@ interface PlayButtonProps extends ButtonProps {
   videoTitle?: string
 }
 
-export default function PlayButton({
+const PlayButton: React.FC<PlayButtonProps> = ({
   sx,
   videoId,
   videoTitle,
   ...others
-}: Readonly<PlayButtonProps>) {
+}) => {
   const navigate = useNavigate()
 
   const handleClick = () => {
@@ -47,3 +47,4 @@ export default function PlayButton({
     </Button>
   )
 }
+export default PlayButton
