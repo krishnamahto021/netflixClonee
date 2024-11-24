@@ -1,69 +1,69 @@
-import React, { forwardRef, useCallback, useRef, useState } from "react";
-import { useMediaQuery, Theme } from "@mui/material";
-import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
-import Container from "@mui/material/Container";
-import Stack from "@mui/material/Stack";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import Dialog from "@mui/material/Dialog";
-import DialogContent from "@mui/material/DialogContent";
-import Slide from "@mui/material/Slide";
-import { TransitionProps } from "@mui/material/transitions";
-import CloseIcon from "@mui/icons-material/Close";
-import AddIcon from "@mui/icons-material/Add";
-import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
-import VolumeUpIcon from "@mui/icons-material/VolumeUp";
-import VolumeOffIcon from "@mui/icons-material/VolumeOff";
-import Player from "video.js/dist/types/player";
+import React, { forwardRef, useCallback, useRef, useState } from "react"
+import { useMediaQuery, Theme } from "@mui/material"
+import Box from "@mui/material/Box"
+import Grid from "@mui/material/Grid"
+import Container from "@mui/material/Container"
+import Stack from "@mui/material/Stack"
+import IconButton from "@mui/material/IconButton"
+import Typography from "@mui/material/Typography"
+import Dialog from "@mui/material/Dialog"
+import DialogContent from "@mui/material/DialogContent"
+import Slide from "@mui/material/Slide"
+import { TransitionProps } from "@mui/material/transitions"
+import CloseIcon from "@mui/icons-material/Close"
+import AddIcon from "@mui/icons-material/Add"
+import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt"
+import VolumeUpIcon from "@mui/icons-material/VolumeUp"
+import VolumeOffIcon from "@mui/icons-material/VolumeOff"
+import Player from "video.js/dist/types/player"
 
-import MaxLineTypography from "./MaxLineTypography";
-import PlayButton from "./PlayButton";
-import NetflixIconButton from "./NetflixIconButton";
-import AgeLimitChip from "./AgeLimitChip";
-import QualityChip from "./QualityChip";
-import { formatMinuteToReadable, getRandomNumber } from "src/utils/common";
-import SimilarVideoCard from "./SimilarVideoCard";
-import { useDetailModal } from "src/providers/DetailModalProvider";
-import { useGetSimilarVideosQuery } from "src/store/slices/discover";
-import { MEDIA_TYPE } from "src/types/Common";
-import VideoJSPlayer from "./watch/VideoJSPlayer";
-import { useMyList } from "src/hooks/useMyList";
-import CheckIcon from "@mui/icons-material/Check";
-import { useNavigate } from "react-router-dom";
+import MaxLineTypography from "./MaxLineTypography"
+import PlayButton from "./common/button/PlayButton"
+import NetflixIconButton from "./common/button/NetflixIconButton"
+import AgeLimitChip from "./common/chips/AgeLimitChip"
+import QualityChip from "./common/chips/QualityChip"
+import { formatMinuteToReadable, getRandomNumber } from "../utils/index"
+import { SimilarVideoCard } from "./video/SimilarVideoCard"
+import { useDetailModal } from "src/providers/DetailModalProvider"
+import { useGetSimilarVideosQuery } from "src/store/slices/discover"
+import { MEDIA_TYPE } from "../../types/Common"
+import VideoJSPlayer from "./watch/VideoJSPlayer"
+import { useMyList } from "../../hooks/useMyList"
+import CheckIcon from "@mui/icons-material/Check"
+import { useNavigate } from "react-router-dom"
 
 const Transition = forwardRef(function Transition(
   props: TransitionProps & {
-    children: React.ReactElement<any, any>;
+    children: React.ReactElement<any, any>
   },
   ref: React.Ref<unknown>
 ) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
+  return <Slide direction="up" ref={ref} {...props} />
+})
 
 export default function DetailModal() {
-  const navigate = useNavigate();
-  const { detail, setDetailType } = useDetailModal();
+  const navigate = useNavigate()
+  const { detail, setDetailType } = useDetailModal()
   const { data: similarVideos } = useGetSimilarVideosQuery(
     { mediaType: detail.mediaType ?? MEDIA_TYPE.Movie, id: detail.id ?? 0 },
     { skip: !detail.id }
-  );
-  const playerRef = useRef<Player | null>(null);
-  const [muted, setMuted] = useState(true);
-  const { myList, addToMyList, removeFromMyList } = useMyList();
-  const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"));
+  )
+  const playerRef = useRef<Player | null>(null)
+  const [muted, setMuted] = useState(true)
+  const { myList, addToMyList, removeFromMyList } = useMyList()
+  const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"))
 
   const handleReady = useCallback((player: Player) => {
-    playerRef.current = player;
-    setMuted(player.muted());
-  }, []);
+    playerRef.current = player
+    setMuted(player.muted())
+  }, [])
 
   const handleMute = useCallback((status: boolean) => {
     if (playerRef.current) {
-      playerRef.current.muted(!status);
-      setMuted(!status);
+      playerRef.current.muted(!status)
+      setMuted(!status)
     }
-  }, []);
+  }, [])
 
   const handlePlayVideo = () => {
     if (detail.id !== undefined && detail.mediaDetail) {
@@ -73,30 +73,30 @@ export default function DetailModal() {
           videoTitle: detail.mediaDetail.title,
           videoOverview: detail.mediaDetail.overview,
         },
-      });
+      })
     }
-  };
+  }
 
   const isInMyList =
-    detail.id !== undefined && myList.some((item) => item.id === detail.id);
+    detail.id !== undefined && myList.some((item) => item.id === detail.id)
 
   const handleAddRemoveMyList = () => {
     if (detail.id !== undefined && detail.mediaDetail) {
       if (isInMyList) {
-        removeFromMyList(detail.id);
+        removeFromMyList(detail.id)
       } else {
         addToMyList({
           ...detail.mediaDetail,
           id: detail.id,
           genre_ids: [],
-        });
+        })
       }
     }
-  };
+  }
 
   const handleClose = () => {
-    setDetailType({ mediaType: undefined, id: undefined });
-  };
+    setDetailType({ mediaType: undefined, id: undefined })
+  }
 
   if (detail.id !== undefined && detail.mediaDetail) {
     return (
@@ -193,7 +193,7 @@ export default function DetailModal() {
                   sx={{ color: "white", fontSize: { xs: 16, sm: 22 } }}
                 />
               </IconButton>
-              
+
               <Box
                 sx={{
                   position: "absolute",
@@ -203,12 +203,12 @@ export default function DetailModal() {
                   px: { xs: 2, sm: 3, md: 5 },
                 }}
               >
-                <MaxLineTypography 
-                  variant="h4" 
-                  maxLine={1} 
-                  sx={{ 
+                <MaxLineTypography
+                  variant="h4"
+                  maxLine={1}
+                  sx={{
                     mb: 2,
-                    display: { xs: 'block', sm: 'block' }
+                    display: { xs: "block", sm: "block" },
                   }}
                 >
                   {detail.mediaDetail.title}
@@ -248,7 +248,12 @@ export default function DetailModal() {
             >
               <Grid container spacing={5} alignItems="flex-start">
                 <Grid item xs={12} sm={8}>
-                  <Stack direction="row" spacing={1} alignItems="center" sx={{ flexWrap: 'wrap', mb: 2 }}>
+                  <Stack
+                    direction="row"
+                    spacing={1}
+                    alignItems="center"
+                    sx={{ flexWrap: "wrap", mb: 2 }}
+                  >
                     <Typography
                       variant="subtitle1"
                       sx={{ color: "success.main" }}
@@ -304,8 +309,8 @@ export default function DetailModal() {
           </Box>
         </DialogContent>
       </Dialog>
-    );
+    )
   }
 
-  return null;
+  return null
 }

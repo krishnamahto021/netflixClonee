@@ -8,10 +8,10 @@ import Typography from "@mui/material/Typography";
 
 import CustomNavigation from "./CustomNavigation";
 import VideoItemWithHover from "src/components/VideoItemWithHover";
-import { ARROW_MAX_WIDTH } from "src/constant";
-import { CustomGenre, Genre } from "src/types/Genre";
-import { Movie } from "src/types/Movie";
-import { PaginatedMovieResult } from "src/types/Common";
+import { ARROW_MAX_WIDTH } from "../../../constants/index";
+import { CustomGenre, Genre } from "../../../types/Genre";
+import { Movie } from "../../../types/Movie";
+import { PaginatedMovieResult } from "../../../types/Common";
 
 // Root styled component for slider container
 const RootStyle = styled("div")(() => ({

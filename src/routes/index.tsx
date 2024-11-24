@@ -1,11 +1,10 @@
-import { Navigate, createBrowserRouter } from "react-router-dom";
-import { MAIN_PATH } from "src/constant";
+import { Navigate, createBrowserRouter } from "react-router-dom"
+import { MAIN_PATH } from "../../constants/index"
 
-import MainLayout from "src/layouts/MainLayout";
+import MainLayout from "../../layouts/MainLayout"
 
-import MyList from "src/pages/MyList";
-import SearchPage from "src/pages/SearchPage";
-
+import MyList from "../../pages/MyList"
+import SearchPage from "../../pages/SearchPage"
 
 const router = createBrowserRouter([
   {
@@ -18,23 +17,23 @@ const router = createBrowserRouter([
       },
       {
         path: MAIN_PATH.browse,
-        lazy: () => import("src/pages/HomePage"),
+        lazy: () => import("../../pages/HomePage"),
       },
       {
         path: MAIN_PATH.genreExplore,
         children: [
           {
             path: ":genreId",
-            lazy: () => import("src/pages/GenreExplore"),
+            lazy: () => import("../../pages/GenreExplore"),
           },
         ],
       },
       {
         path: MAIN_PATH.watch,
-        lazy: () => import("src/pages/WatchPage"),
+        lazy: () => import("../../pages/WatchPage"),
       },
       {
-        path: "my-list", 
+        path: "my-list",
         element: <MyList />,
       },
       {
@@ -43,6 +42,6 @@ const router = createBrowserRouter([
       },
     ],
   },
-]);
+])
 
-export default router;
+export default router
