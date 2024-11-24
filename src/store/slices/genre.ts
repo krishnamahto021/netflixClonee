@@ -1,5 +1,5 @@
-import { TMDB_V3_API_KEY } from "../../../constants/index";
-import { Genre } from "../../../types/Genre";
+import { TMDB_V3_API_KEY } from "src/constant";
+import { Genre } from "src/types/Genre";
 import { tmdbApi } from "./apiSlice";
 
 const extendedApi = tmdbApi.injectEndpoints({
