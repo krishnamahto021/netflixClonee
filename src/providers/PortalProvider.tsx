@@ -1,37 +1,39 @@
-import { ReactNode, useState, useCallback } from "react"
-import { Movie } from "../../types/Movie"
-import createSafeContext from "src/lib/createSafeContext"
+import { ReactNode, useState, useCallback } from "react";
+import { Movie } from "src/types/Movie";
+import createSafeContext from "src/lib/createSafeContext";
 
 export interface PortalConsumerProps {
-  setPortal: (anchor: HTMLElement | null, vidoe: Movie | null) => void
+  setPortal: (anchor: HTMLElement | null, vidoe: Movie | null) => void;
 }
 export interface PortalDataConsumerProps {
-  anchorElement: HTMLElement | null
-  miniModalMediaData: Movie | null
+  anchorElement: HTMLElement | null;
+  miniModalMediaData: Movie | null;
 }
 
 export const [usePortal, Provider] =
-  createSafeContext<PortalConsumerProps["setPortal"]>()
+  createSafeContext<PortalConsumerProps["setPortal"]>();
 
 export const [usePortalData, PortalDataProvider] =
-  createSafeContext<PortalDataConsumerProps>()
+  createSafeContext<PortalDataConsumerProps>();
 
-const PortalProvider = ({ children }: Readonly<{ children: ReactNode }>) => {
-  const [anchorElement, setAnchorElement] = useState<HTMLElement | null>(null)
+export default function PortalProvider({ children }: { children: ReactNode }) {
+  const [anchorElement, setAnchorElement] = useState<HTMLElement | null>(null);
   const [miniModalMediaData, setMiniModalMediaData] = useState<Movie | null>(
     null
-  )
+  );
 
   const handleChangePortal = useCallback(
     (anchor: HTMLElement | null, video: Movie | null) => {
-      setAnchorElement(anchor)
-      setMiniModalMediaData(video)
+      setAnchorElement(anchor);
+      setMiniModalMediaData(video);
     },
     []
-  )
+  );
 
   return (
-    <Provider value={handleChangePortal}>
+    <Provider
+      value={handleChangePortal}
+    >
       <PortalDataProvider
         value={{
           anchorElement,
@@ -41,6 +43,5 @@ const PortalProvider = ({ children }: Readonly<{ children: ReactNode }>) => {
         {children}
       </PortalDataProvider>
     </Provider>
-  )
+  );
 }
-export default PortalProvider

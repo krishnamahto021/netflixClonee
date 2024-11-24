@@ -1,7 +1,7 @@
-import { TMDB_V3_API_KEY } from "../../../constants/index";
+import { TMDB_V3_API_KEY } from "src/constant";
 import { tmdbApi } from "./apiSlice";
-import { MEDIA_TYPE, PaginatedMovieResult } from "../../../types/Common";
-import { MovieDetail } from "../../../types/Movie";
+import { MEDIA_TYPE, PaginatedMovieResult } from "src/types/Common";
+import { MovieDetail } from "src/types/Movie";
 import { createSlice, isAnyOf } from "@reduxjs/toolkit";
 
 const initialState: Record<string, Record<string, PaginatedMovieResult>> = {};

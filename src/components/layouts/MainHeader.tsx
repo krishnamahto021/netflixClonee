@@ -1,22 +1,22 @@
-import * as React from "react"
-import { Link, LinkProps } from "react-router-dom"
-import AppBar from "@mui/material/AppBar"
-import Box from "@mui/material/Box"
-import Stack from "@mui/material/Stack"
-import Toolbar from "@mui/material/Toolbar"
-import IconButton from "@mui/material/IconButton"
-import Typography from "@mui/material/Typography"
-import Menu from "@mui/material/Menu"
-import MenuIcon from "@mui/icons-material/Menu"
-import Avatar from "@mui/material/Avatar"
-import Tooltip from "@mui/material/Tooltip"
-import MenuItem from "@mui/material/MenuItem"
-import NotificationsIcon from "@mui/icons-material/Notifications"
-import useOffSetTop from "../../../hooks/useOffSetTop"
-import { APP_BAR_HEIGHT } from "../../../constants/index"
-import Logo from "../common/Logo"
-import SearchBox from "../common/SearchBox"
-import { styled } from "@mui/material/styles"
+import * as React from "react";
+import { Link, LinkProps } from "react-router-dom";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
+import Toolbar from "@mui/material/Toolbar";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import Menu from "@mui/material/Menu";
+import MenuIcon from "@mui/icons-material/Menu";
+import Avatar from "@mui/material/Avatar";
+import Tooltip from "@mui/material/Tooltip";
+import MenuItem from "@mui/material/MenuItem";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import useOffSetTop from "src/hooks/useOffSetTop";
+import { APP_BAR_HEIGHT } from "src/constant";
+import Logo from "../Logo";
+import SearchBox from "../SearchBox";
+import { styled } from "@mui/material/styles";
 
 const pages = [
   { name: "Home", path: "/" },
@@ -25,12 +25,12 @@ const pages = [
   { name: "New & Popular", path: "/" },
   { name: "My List", path: "/my-list" },
   { name: "Browse by Languages", path: "/" },
-]
+];
 
-type Variant = "subtitle1" | "subtitle2" | "body1" | "body2"
+type Variant = "subtitle1" | "subtitle2" | "body1" | "body2";
 
 interface NetflixLinkProps extends LinkProps {
-  variant?: Variant
+  variant?: Variant;
 }
 
 const NetflixLink = styled(Link, {
@@ -45,30 +45,32 @@ const NetflixLink = styled(Link, {
   "&:hover": {
     color: theme.palette.grey[300],
   },
-}))
+}));
 
 const MainHeader: React.FC = () => {
-  const isOffset = useOffSetTop(APP_BAR_HEIGHT)
+  const isOffset = useOffSetTop(APP_BAR_HEIGHT);
 
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null)
+  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
+    null
+  );
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
-  )
+  );
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElNav(event.currentTarget)
-  }
+    setAnchorElNav(event.currentTarget);
+  };
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget)
-  }
+    setAnchorElUser(event.currentTarget);
+  };
 
   const handleCloseNavMenu = () => {
-    setAnchorElNav(null)
-  }
+    setAnchorElNav(null);
+  };
 
   const handleCloseUserMenu = () => {
-    setAnchorElUser(null)
-  }
+    setAnchorElUser(null);
+  };
 
   return (
     <AppBar
@@ -210,7 +212,7 @@ const MainHeader: React.FC = () => {
         </Box>
       </Toolbar>
     </AppBar>
-  )
-}
+  );
+};
 
-export default MainHeader
+export default MainHeader;

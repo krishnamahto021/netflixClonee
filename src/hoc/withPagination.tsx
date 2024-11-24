@@ -1,13 +1,13 @@
-import { ElementType, useCallback, useEffect } from "react"
-import MainLoadingScreen from "src/components/common/LoadingScreen/MainLoadingScreen"
-import { useAppDispatch, useAppSelector } from "../../hooks/redux"
+import { ElementType, useCallback, useEffect } from "react";
+import MainLoadingScreen from "src/components/MainLoadingScreen";
+import { useAppDispatch, useAppSelector } from "src/hooks/redux";
 import {
   initiateItem,
   useLazyGetVideosByMediaTypeAndGenreIdQuery,
   useLazyGetVideosByMediaTypeAndCustomGenreQuery,
-} from "src/store/slices/discover"
-import { MEDIA_TYPE } from "../../types/Common"
-import { CustomGenre, Genre } from "../../types/Genre"
+} from "src/store/slices/discover";
+import { MEDIA_TYPE } from "src/types/Common";
+import { CustomGenre, Genre } from "src/types/Genre";
 
 export default function withPagination(
   Component: ElementType,
@@ -15,26 +15,26 @@ export default function withPagination(
   genre: Genre | CustomGenre
 ) {
   return function WithPagination() {
-    const dispatch = useAppDispatch()
-    const itemKey = genre.id ?? (genre as CustomGenre).apiString
-    const mediaState = useAppSelector((state) => state.discover[mediaType])
-    const pageState = mediaState ? mediaState[itemKey] : undefined
+    const dispatch = useAppDispatch();
+    const itemKey = genre.id ?? (genre as CustomGenre).apiString;
+    const mediaState = useAppSelector((state) => state.discover[mediaType]);
+    const pageState = mediaState ? mediaState[itemKey] : undefined;
     const [getVideosByMediaTypeAndGenreId] =
-      useLazyGetVideosByMediaTypeAndGenreIdQuery()
+      useLazyGetVideosByMediaTypeAndGenreIdQuery();
     const [getVideosByMediaTypeAndCustomGenre] =
-      useLazyGetVideosByMediaTypeAndCustomGenreQuery()
+      useLazyGetVideosByMediaTypeAndCustomGenreQuery();
 
     useEffect(() => {
       if (!mediaState || !pageState) {
-        dispatch(initiateItem({ mediaType, itemKey }))
+        dispatch(initiateItem({ mediaType, itemKey }));
       }
-    }, [mediaState, pageState])
+    }, [mediaState, pageState]);
 
     useEffect(() => {
       if (pageState && pageState.page === 0) {
-        handleNext(pageState.page + 1)
+        handleNext(pageState.page + 1);
       }
-    }, [pageState])
+    }, [pageState]);
 
     const handleNext = useCallback((page: number) => {
       if (genre.id) {
@@ -42,22 +42,22 @@ export default function withPagination(
           mediaType,
           genreId: genre.id,
           page,
-        })
+        });
       } else {
         getVideosByMediaTypeAndCustomGenre({
           mediaType,
           apiString: (genre as CustomGenre).apiString,
           page,
-        })
+        });
       }
       // dispatch(setNextPage({ mediaType, itemKey }));
-    }, [])
+    }, []);
 
     if (pageState) {
       return (
         <Component genre={genre} data={pageState} handleNext={handleNext} />
-      )
+      );
     }
-    return <MainLoadingScreen />
-  }
+    return <MainLoadingScreen />;
+  };
 }
