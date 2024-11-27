@@ -7,10 +7,10 @@ import { Provider } from "react-redux";
 import { RouterProvider } from "react-router-dom";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
-import store from "./store";
-import { extendedApi } from "./store/slices/configuration";
-import palette from "./theme/palette";
-import router from "./routes";
+import store from "./components/store";
+import { extendedApi } from "./components/store/slices/configuration";
+import palette from "./components/theme/palette";
+import router from "./components/Helpers/routes";
 import MainLoadingScreen from "./components/MainLoadingScreen";
 
 store.dispatch(extendedApi.endpoints.getConfiguration.initiate(undefined));

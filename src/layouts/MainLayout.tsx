@@ -1,22 +1,22 @@
-import { Outlet, useLocation, useNavigation } from "react-router-dom";
-import Box from "@mui/material/Box";
+import { Outlet, useLocation, useNavigation } from "react-router-dom"
+import Box from "@mui/material/Box"
 
-import DetailModal from "src/components/DetailModal";
-import VideoPortalContainer from "src/components/VideoPortalContainer";
-import DetailModalProvider from "src/providers/DetailModalProvider";
-import PortalProvider from "src/providers/PortalProvider";
-import { MAIN_PATH } from "src/constant";
-import { Footer, MainHeader } from "src/components/layouts";
-import MainLoadingScreen from "src/components/MainLoadingScreen";
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import DetailModal from "src/components/Models/DetailModal"
+import VideoPortalContainer from "src/components/Models/VideoPortalContainer"
+import DetailModalProvider from "src/components/Helpers/providers/DetailModalProvider"
+import PortalProvider from "src/components/Helpers/providers/PortalProvider"
+import { MAIN_PATH } from "../components/constant/index"
+import { Footer, MainHeader } from "src/components/Layout"
+import MainLoadingScreen from "src/components/MainLoadingScreen"
+import { ToastContainer } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 
 // Import MyListProvider
-import { MyListProvider } from 'src/hooks/MyListContext';
+import { MyListProvider } from "../components/Helpers/hooks/MyListContext"
 
 const MainLayout = () => {
-  const location = useLocation();
-  const navigation = useNavigation();
+  const location = useLocation()
+  const navigation = useNavigation()
 
   return (
     <Box
@@ -43,7 +43,7 @@ const MainLayout = () => {
 
       {location.pathname !== `/${MAIN_PATH.watch}` && <Footer />}
     </Box>
-  );
-};
+  )
+}
 
-export default MainLayout;
+export default MainLayout
