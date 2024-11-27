@@ -1,4 +1,4 @@
-import withPagination from "src/hoc/withPagination";
+import withPagination from "./Helpers/hoc/withPagination";
 import { MEDIA_TYPE } from "src/types/Common";
 import { CustomGenre, Genre } from "src/types/Genre";
 import GridWithInfiniteScroll from "./GridWithInfiniteScroll";
